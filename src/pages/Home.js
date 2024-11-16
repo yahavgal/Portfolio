@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaPhone, FaSuitcase } from 'react-icons/fa'; // Import icons from react-icons
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
 // Styled Components for Home Section
 const HomeContainer = styled.section`
@@ -16,18 +17,33 @@ const ContentContainer = styled.div`
   height: 100vh;
   background-color: ${(props) => props.theme.background};
   padding: 18px 0 20px 20px;
+
+  @media (max-width: 768px) {
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    padding: 0 20px; /* Adjusts padding for mobile view */
+  }
 `;
 
 const Headline = styled.h1`
   font-size: 3rem;
   color: ${(props) => props.theme.textPrimary};
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem; /* Reduces font size for mobile */
+    text-align: center; /* Centers the text */
+  }
 `;
 
 const Tagline = styled.p`
   font-size: 1.25rem;
   color: ${(props) => props.theme.textSecondary};
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1rem; /* Reduces font size for mobile */
+  }
 `;
 
 const CTAContainer = styled.div`
@@ -60,7 +76,6 @@ const CTAButton = styled.button`
   }
 `;
 
-
 const OutlineButton = styled(CTAButton)`
   background-color: transparent;
   border: 2px solid ${(props) => props.theme.textPrimary};
@@ -73,6 +88,8 @@ const OutlineButton = styled(CTAButton)`
 `;
 
 const Home = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
   return (
     <HomeContainer>
       <ContentContainer>
@@ -83,10 +100,10 @@ const Home = () => {
           Full-Stack Developer & Product Designer
         </Tagline>
         <CTAContainer>
-          <CTAButton>
+          <CTAButton onClick={() => navigate('/contact')}>
             <FaPhone /> Get in Touch
           </CTAButton>
-          <OutlineButton>
+          <OutlineButton onClick={() => navigate('/projects')}>
             <FaSuitcase /> View my Work
           </OutlineButton>
         </CTAContainer>
