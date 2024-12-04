@@ -16,7 +16,7 @@ const ContentContainer = styled.div`
   align-items: start;
   height: 100vh;
   background-color: ${(props) => props.theme.background};
-  padding: 18px 0 20px 20px;
+  padding: 18px 20px;
 
   @media (max-width: 768px) {
     justify-content: center; /* Centers content vertically */

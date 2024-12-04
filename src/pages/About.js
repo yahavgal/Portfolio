@@ -9,7 +9,7 @@ const AboutContainer = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Ensures footer sticks to the bottom */
-  padding: 18px 0 20px 20px;
+  padding: 18px 20px;
 `;
 
 const ContentContainer = styled.div`
