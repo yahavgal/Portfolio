@@ -134,7 +134,6 @@ const ExpandedHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   color: ${(props) => props.theme.contrast};
-  border-radius: 5px 5px 0 0;
 `;
 
 const BackButton = styled.button`
@@ -172,6 +171,24 @@ const ProjectDetails = styled.div`
   gap: 15px;
 `;
 
+const ProjectIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 7px;
+  border: 2px solid ${(props) => props.theme.accent};
+  border-radius: 5px;
+  color: ${(props) => props.theme.accent};
+  font-size: 1.8rem;
+`;
+
+const ProjectName = styled.h2`
+  font-size: 28px;
+  color: ${(props) => props.theme.accent};
+`;
+
 const CircleLinkButton = styled.a`
   display: flex;
   align-items: center;
@@ -191,7 +208,7 @@ const CircleLinkButton = styled.a`
       ? '#3CDE36'
       : 'transparent'};
   transition: transform 0.3s;
-  margin-left: 10px; /* Added spacing between buttons */
+  margin-left: 10px;
 
   &:hover {
     transform: scale(1.1);
@@ -200,16 +217,6 @@ const CircleLinkButton = styled.a`
   svg {
     font-size: 1.5rem;
   }
-`;
-
-const ProjectIcon = styled.div`
-  font-size: 2rem;
-  color: ${(props) => props.theme.accent};
-`;
-
-const ProjectName = styled.h2`
-  font-size: 28px;
-  color: ${(props) => props.theme.textPrimary};
 `;
 
 const projectData = [
@@ -318,7 +325,7 @@ const Projects = () => {
           <ExpandedContent>
             <HeaderContent>
               <ProjectDetails>
-                {selectedProjectData.icon}
+                <ProjectIcon>{selectedProjectData.icon}</ProjectIcon>
                 <ProjectName>{selectedProjectData.name}</ProjectName>
               </ProjectDetails>
               <LinksContainer>
