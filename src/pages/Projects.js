@@ -241,7 +241,6 @@ const FeaturesLabel = styled.p`
 const FeaturesList = styled.ul`
   color: ${(props) => props.theme.textPrimary};
   list-style-type: disc;
-  margin-left: 20px;
   padding-left: 20px;
 `;
 
@@ -319,7 +318,7 @@ const projectData = [
     ],
     figmaLink: 'https://figma.com',
     githubLink: null,
-    canvaLink: 'https://canva.com',
+    canvaLink: 'https://www.canva.com/design/DAGYgmcPfAI/VcF52ta3kBPgxeWnYSBpkg/edit?utm_content=DAGYgmcPfAI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
     icon: <FaFigma />,
   },
 ];
