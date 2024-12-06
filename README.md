@@ -40,7 +40,7 @@ Welcome to my portfolio website, a dynamic platform showcasing my skills, projec
 
 ## 👨‍💻 Author
 
-Yahav Gal (https://www.linkedin.com/in/your-profile)  
+Yahav Gal (https://www.linkedin.com/in/yahav-gal-727502203/)  
 Frontend Developer | UI/UX Designer  
 
 Feel free to explore the website and reach out for any inquiries or collaborations!
