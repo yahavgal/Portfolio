@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaGithub, FaFigma, FaArrowLeft, FaSlideshare, FaAnchor } from 'react-icons/fa';
+import { FaGithub, FaFigma, FaArrowLeft, FaSlideshare, FaAnchor, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
 
 // Styled Components for Projects Section
 const ProjectsContainer = styled.section`
@@ -25,16 +25,6 @@ const ProjectsGrid = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-
-  &:hover > div {
-    transform: scale(0.95);
-    filter: brightness(0.9);
-  }
-
-  & > div:hover {
-    transform: scale(1.05);
-    filter: brightness(1.05);
-  }
 `;
 
 const ProjectCard = styled.div`
@@ -45,7 +35,6 @@ const ProjectCard = styled.div`
   border-bottom: none;
   border-radius: 5px;
   overflow: hidden;
-  transition: transform 0.3s, filter 0.3s;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -189,6 +178,59 @@ const ProjectName = styled.h2`
   color: ${(props) => props.theme.accent};
 `;
 
+const DescriptionLabel = styled.p`
+  font-weight: bold;
+  color: ${(props) => props.theme.accent};
+  font-size: 18px;
+  margin-top: 20px;
+`;
+
+const DescriptionText = styled.p`
+  color: ${(props) => props.theme.textPrimary};
+`;
+
+const Section = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SectionLabel = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid ${(props) => props.theme.textPrimary};
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+`;
+
+const SectionDescription = styled.p`
+  color: ${(props) => props.theme.textPrimary};
+  text-align: left;
+`;
+
+const SectionIcon = styled.div`
+  font-size: 1.5rem;
+  display: flex;
+  color: ${(props) => props.theme.textPrimary};
+`;
+
+const SectionText = styled.span`
+  font-weight: bold;
+  font-size: 18px;
+  color: ${(props) => props.theme.textPrimary};
+`;
+
+const SectionContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  background-color: ${(props) => props.theme.accent};
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.textPrimary};
+  padding: 15px;
+  margin-top: 20px;
+`;
+
 const CircleLinkButton = styled.a`
   display: flex;
   align-items: center;
@@ -224,7 +266,10 @@ const projectData = [
     name: 'Lango',
     image: 'project-preview.jpg',
     techStack: ['Next.js', 'TailwindCSS', 'PostgreSQL'],
+    shortDescription: 'A language learning app with real-time updates.',
     description: 'A language learning app with seamless UX and real-time updates.',
+    problem: 'Language learners face difficulty in tracking progress effectively.',
+    solution: 'Developed an intuitive platform with real-time progress tracking.',
     figmaLink: 'https://figma.com',
     githubLink: 'https://github.com',
     canvaLink: null,
@@ -234,7 +279,13 @@ const projectData = [
     name: 'Shrine',
     image: 'project-preview.jpg',
     techStack: ['Figma', 'Photoshop', 'Balsamiq'],
-    description: 'A mindfulness app designed to enhance daily productivity and mental well-being.',
+    shortDescription: 'A mindfulness app for daily growth.',
+    description:
+      'A holistic platform designed to help individuals organize and engage in mindfulness activities. The project aimed to provide users with tools for daily mindfulness exercises, guided meditations, and a way to track their personal growth over time.',
+    problem:
+      'Users often struggle to maintain consistent mindfulness practices due to the lack of structure and personal engagement in existing apps. They also find it difficult to balance mindfulness activities with their busy schedules.',
+    solution:
+      'Designed and prototyped an app that integrates daily mindfulness activities, personal habit tracking, and guided meditation sessions. The platform featured customized reminders and user journeys to help users stay committed to their mental well-being goals.',
     figmaLink: 'https://figma.com',
     githubLink: null,
     canvaLink: 'https://canva.com',
@@ -263,59 +314,58 @@ const Projects = () => {
         <>
           <Headline>Bringing Ideas to Life</Headline>
           <Tagline>Explore the work I’ve built to solve problems, enhance experiences, and push boundaries.</Tagline>
+          <ProjectsGrid>
+            {projectData.map((project) => (
+              <ProjectCard key={project.name} onClick={() => handleCardClick(project.name)}>
+                <ProjectHeader>
+                  {project.icon}
+                  <ProjectTitle>{project.name}</ProjectTitle>
+                </ProjectHeader>
+                <ProjectImage src={project.image} alt={`${project.name} Preview`} />
+                <TechStack>
+                  {project.techStack.map((tech) => (
+                    <span key={tech}>{tech}</span>
+                  ))}
+                </TechStack>
+                <ProjectDescription>{project.shortDescription}</ProjectDescription>
+                <LinksContainer>
+                  {project.figmaLink && (
+                    <LinkButton
+                      href={project.figmaLink}
+                      platform="figma"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaFigma /> Figma
+                    </LinkButton>
+                  )}
+                  {project.githubLink && (
+                    <LinkButton
+                      href={project.githubLink}
+                      platform="github"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaGithub /> GitHub
+                    </LinkButton>
+                  )}
+                  {project.canvaLink && (
+                    <LinkButton
+                      href={project.canvaLink}
+                      platform="canva"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaSlideshare /> Canva
+                    </LinkButton>
+                  )}
+                </LinksContainer>
+              </ProjectCard>
+            ))}
+          </ProjectsGrid>
         </>
       )}
-      {!selectedProject ? (
-        <ProjectsGrid>
-          {projectData.map((project) => (
-            <ProjectCard key={project.name} onClick={() => handleCardClick(project.name)}>
-              <ProjectHeader>
-                {project.icon}
-                <ProjectTitle>{project.name}</ProjectTitle>
-              </ProjectHeader>
-              <ProjectImage src={project.image} alt={`${project.name} Preview`} />
-              <TechStack>
-                {project.techStack.map((tech) => (
-                  <span key={tech}>{tech}</span>
-                ))}
-              </TechStack>
-              <ProjectDescription>{project.description}</ProjectDescription>
-              <LinksContainer>
-                {project.figmaLink && (
-                  <LinkButton
-                    href={project.figmaLink}
-                    platform="figma"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaFigma /> Figma
-                  </LinkButton>
-                )}
-                {project.githubLink && (
-                  <LinkButton
-                    href={project.githubLink}
-                    platform="github"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub /> GitHub
-                  </LinkButton>
-                )}
-                {project.canvaLink && (
-                  <LinkButton
-                    href={project.canvaLink}
-                    platform="canva"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaSlideshare /> Canva
-                  </LinkButton>
-                )}
-              </LinksContainer>
-            </ProjectCard>
-          ))}
-        </ProjectsGrid>
-      ) : (
+      {selectedProject && (
         <ExpandedProject>
           <ExpandedHeader>
             <BackButton onClick={handleBackClick}>
@@ -361,7 +411,28 @@ const Projects = () => {
                 )}
               </LinksContainer>
             </HeaderContent>
-            <p>{selectedProjectData.description}</p>
+            <DescriptionLabel>Description</DescriptionLabel>
+            <DescriptionText>{selectedProjectData.description}</DescriptionText>
+            <SectionContainer>
+              <Section>
+                <SectionLabel>
+                  <SectionIcon>
+                    <FaQuestionCircle />
+                  </SectionIcon>
+                  <SectionText>Problem</SectionText>
+                </SectionLabel>
+                <SectionDescription>{selectedProjectData.problem}</SectionDescription>
+              </Section>
+              <Section>
+                <SectionLabel>
+                  <SectionIcon>
+                    <FaLightbulb />
+                  </SectionIcon>
+                  <SectionText>Solution</SectionText>
+                </SectionLabel>
+                <SectionDescription>{selectedProjectData.solution}</SectionDescription>
+              </Section>
+            </SectionContainer>
           </ExpandedContent>
         </ExpandedProject>
       )}
