@@ -231,6 +231,25 @@ const SectionContainer = styled.div`
   margin-top: 20px;
 `;
 
+const FeaturesLabel = styled.p`
+  font-weight: bold;
+  color: ${(props) => props.theme.accent};
+  font-size: 18px;
+  margin-top: 20px;
+`;
+
+const FeaturesList = styled.ul`
+  color: ${(props) => props.theme.textPrimary};
+  list-style-type: disc;
+  margin-left: 20px;
+  padding-left: 20px;
+`;
+
+const FeatureItem = styled.li`
+  margin-bottom: 10px;
+  font-size: 16px;
+`;
+
 const CircleLinkButton = styled.a`
   display: flex;
   align-items: center;
@@ -270,6 +289,12 @@ const projectData = [
     description: 'A language learning app with seamless UX and real-time updates.',
     problem: 'Language learners face difficulty in tracking progress effectively.',
     solution: 'Developed an intuitive platform with real-time progress tracking.',
+    keyFeatures: [
+      'Adaptive Learning Paths: Tailored courses based on user proficiency.',
+      'Gamification: Points, levels, and rewards to keep users motivated.',
+      'Community Engagement: Discussion boards and live language practice with peers.',
+      'Cross-platform: React and Node.js-powered web and mobile app.',
+    ],
     figmaLink: 'https://figma.com',
     githubLink: 'https://github.com',
     canvaLink: null,
@@ -286,6 +311,12 @@ const projectData = [
       'Users often struggle to maintain consistent mindfulness practices due to the lack of structure and personal engagement in existing apps. They also find it difficult to balance mindfulness activities with their busy schedules.',
     solution:
       'Designed and prototyped an app that integrates daily mindfulness activities, personal habit tracking, and guided meditation sessions. The platform featured customized reminders and user journeys to help users stay committed to their mental well-being goals.',
+    keyFeatures: [
+      'Personalized Mindfulness Plans: Users could set their goals and receive tailored meditation and mindfulness routines.',
+      'Daily Reminders and Notifications: Customizable reminders to help users stick to their mindfulness practice, even on hectic days.',
+      'Progress Tracking: Detailed logs and visual tracking of users’ mindfulness habits and improvements over time.',
+      'Cross-platform: Planned development using React Native for both iOS and Android platforms.',
+    ],
     figmaLink: 'https://figma.com',
     githubLink: null,
     canvaLink: 'https://canva.com',
@@ -433,6 +464,12 @@ const Projects = () => {
                 <SectionDescription>{selectedProjectData.solution}</SectionDescription>
               </Section>
             </SectionContainer>
+            <FeaturesLabel>Key Features</FeaturesLabel>
+            <FeaturesList>
+              {selectedProjectData.keyFeatures.map((feature, index) => (
+                <FeatureItem key={index}>{feature}</FeatureItem>
+              ))}
+            </FeaturesList>
           </ExpandedContent>
         </ExpandedProject>
       )}
