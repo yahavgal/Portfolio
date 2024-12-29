@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaGithub, FaFigma, FaArrowLeft, FaSlideshare, FaAnchor, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules'; // Import modules from 'swiper/modules'
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 
 // Styled Components for Projects Section
 const ProjectsContainer = styled.section`
@@ -279,6 +285,21 @@ const CircleLinkButton = styled.a`
   }
 `;
 
+const PaginationDots = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const Dot = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: ${(props) => (props.active ? props.theme.accent : props.theme.textSecondary)};
+  transition: background-color 0.3s;
+`;
+
 const projectData = [
   {
     name: 'Lango',
@@ -441,34 +462,44 @@ const Projects = () => {
                 )}
               </LinksContainer>
             </HeaderContent>
-            <DescriptionLabel>Description</DescriptionLabel>
-            <DescriptionText>{selectedProjectData.description}</DescriptionText>
-            <SectionContainer>
-              <Section>
-                <SectionLabel>
-                  <SectionIcon>
-                    <FaQuestionCircle />
-                  </SectionIcon>
-                  <SectionText>Problem</SectionText>
-                </SectionLabel>
-                <SectionDescription>{selectedProjectData.problem}</SectionDescription>
-              </Section>
-              <Section>
-                <SectionLabel>
-                  <SectionIcon>
-                    <FaLightbulb />
-                  </SectionIcon>
-                  <SectionText>Solution</SectionText>
-                </SectionLabel>
-                <SectionDescription>{selectedProjectData.solution}</SectionDescription>
-              </Section>
-            </SectionContainer>
-            <FeaturesLabel>Key Features</FeaturesLabel>
-            <FeaturesList>
-              {selectedProjectData.keyFeatures.map((feature, index) => (
-                <FeatureItem key={index}>{feature}</FeatureItem>
-              ))}
-            </FeaturesList>
+            <Swiper
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+            >
+            <SwiperSlide>
+              <DescriptionLabel>Description</DescriptionLabel>
+              <DescriptionText>{selectedProjectData.description}</DescriptionText>
+              <SectionContainer>
+                <Section>
+                  <SectionLabel>
+                    <SectionIcon>
+                      <FaQuestionCircle />
+                    </SectionIcon>
+                    <SectionText>Problem</SectionText>
+                  </SectionLabel>
+                  <SectionDescription>{selectedProjectData.problem}</SectionDescription>
+                </Section>
+                <Section>
+                  <SectionLabel>
+                    <SectionIcon>
+                      <FaLightbulb />
+                    </SectionIcon>
+                    <SectionText>Solution</SectionText>
+                  </SectionLabel>
+                  <SectionDescription>{selectedProjectData.solution}</SectionDescription>
+                </Section>
+              </SectionContainer>
+              <FeaturesLabel>Key Features</FeaturesLabel>
+              <FeaturesList>
+                {selectedProjectData.keyFeatures.map((feature, index) => (
+                  <FeatureItem key={index}>{feature}</FeatureItem>
+                ))}
+              </FeaturesList>
+            </SwiperSlide>
+            <SwiperSlide>
+              
+            </SwiperSlide>
+            </Swiper>
           </ExpandedContent>
         </ExpandedProject>
       )}
