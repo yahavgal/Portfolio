@@ -3,15 +3,17 @@ import styled from 'styled-components';
 import { FaGithub, FaFigma, FaArrowLeft, FaSlideshare, FaAnchor, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules'; // Import modules from 'swiper/modules'
-import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import 'swiper/css';
+import '../custom-swiper.css';
 
 
 // Styled Components for Projects Section
 const ProjectsContainer = styled.section`
   background-color: ${(props) => props.theme.background};
   padding: 18px 20px;
+  padding-bottom: 0;
 `;
 
 const Headline = styled.h1`
@@ -37,7 +39,7 @@ const ProjectCard = styled.div`
   flex: 1 1 300px;
   max-width: 350px;
   background-color: ${(props) => props.theme.contrast};
-  border: 2px solid ${(props) => props.theme.accent};
+  border: 1px solid ${(props) => props.theme.textPrimary};
   border-bottom: none;
   border-radius: 5px;
   overflow: hidden;
@@ -49,13 +51,14 @@ const ProjectCard = styled.div`
 const ProjectHeader = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 10px;
   color: ${(props) => props.theme.accent};
+  background-color: ${(props) => props.theme.headerPrimary};
 `;
 
 const ProjectTitle = styled.h2`
   margin: 0;
-  margin-left: 10px;
   font-size: 22px;
 `;
 
@@ -67,9 +70,9 @@ const ProjectImage = styled.img`
 const TechStack = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 5px;
-  background-color: ${(props) => props.theme.accent};
-  color: ${(props) => props.theme.contrast};
+  padding: 8px;
+  background-color:  ${(props) => props.theme.headerPrimary};
+  color: ${(props) => props.theme.textSecondary};
 
   span {
     flex: 1;
@@ -80,6 +83,7 @@ const TechStack = styled.div`
 const ProjectDescription = styled.p`
   padding: 15px;
   color: ${(props) => props.theme.textPrimary};
+  background-color: ${(props) => props.theme.contrast};
   flex-grow: 1;
 `;
 
@@ -93,20 +97,12 @@ const LinkButton = styled.a`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  color: ${(props) => props.theme.contrast};
+  color: ${(props) => props.theme.accent};
+  border: 1px solid  ${(props) => props.theme.accent};
   text-decoration: none;
   flex: 1;
   transition: background 0.3s;
-
-  background-color: ${(props) =>
-    props.platform === 'figma'
-      ? '#A259FF'
-      : props.platform === 'github'
-      ? '#DE4C36'
-      : props.platform === 'canva'
-      ? '#3CDE36'
-      : 'transparent'};
-
+  background-color: ${(props) => props.theme.headerPrimary};
   svg {
     margin-right: 5px;
   }
@@ -118,12 +114,12 @@ const LinkButton = styled.a`
 
 const ExpandedProject = styled.div`
   background-color: ${(props) => props.theme.contrast};
-  border: 2px solid ${(props) => props.theme.accent};
+  border: 2px solid  ${(props) => props.theme.headerPrimary};
   border-radius: 5px;
 `;
 
 const ExpandedHeader = styled.div`
-  background-color: ${(props) => props.theme.accent};
+  background-color:  ${(props) => props.theme.headerPrimary};
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -134,7 +130,7 @@ const ExpandedHeader = styled.div`
 const BackButton = styled.button`
   background: none;
   border: none;
-  color: ${(props) => props.theme.contrast};
+  color: ${(props) => props.theme.accent};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -186,7 +182,7 @@ const ProjectName = styled.h2`
 
 const DescriptionLabel = styled.p`
   font-weight: bold;
-  color: ${(props) => props.theme.accent};
+  color: ${(props) => props.theme.textPrimary};
   font-size: 18px;
   margin-top: 20px;
 `;
@@ -230,7 +226,7 @@ const SectionText = styled.span`
 const SectionContainer = styled.div`
   display: flex;
   gap: 20px;
-  background-color: ${(props) => props.theme.accent};
+  background-color: ${(props) => props.theme.background};
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.textPrimary};
   padding: 15px;
@@ -239,7 +235,7 @@ const SectionContainer = styled.div`
 
 const FeaturesLabel = styled.p`
   font-weight: bold;
-  color: ${(props) => props.theme.accent};
+  color: ${(props) => props.theme.textPrimary};
   font-size: 18px;
   margin-top: 20px;
 `;
@@ -261,18 +257,10 @@ const CircleLinkButton = styled.a`
   justify-content: center;
   width: 40px;
   height: 40px;
-  color: ${(props) => props.theme.contrast};
+  color: ${(props) => props.theme.accent};
   text-decoration: none;
-  border: 1px solid ${(props) => props.theme.textPrimary};
-  border-radius: 50%;
-  background-color: ${(props) =>
-    props.platform === 'figma'
-      ? '#A259FF'
-      : props.platform === 'github'
-      ? '#DE4C36'
-      : props.platform === 'canva'
-      ? '#3CDE36'
-      : 'transparent'};
+  border: 1px solid ${(props) => props.theme.accent};
+  border-radius: 8px;
   transition: transform 0.3s;
   margin-left: 10px;
 
@@ -300,6 +288,86 @@ const Dot = styled.div`
   transition: background-color 0.3s;
 `;
 
+const ChallengesLabel = styled.p`
+  font-weight: bold;
+  color: ${(props) => props.theme.textPrimary};
+  font-size: 18px;
+  margin-bottom: 20px;
+`;
+
+const ChallengesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-top: 20px;
+`;
+
+const ChallengeCard = styled.div`
+  border: 1px solid ${(props) => props.theme.textPrimary};
+  background-color: ${(props) => props.theme.background};
+  border-radius: 5px;
+  overflow: hidden;
+`;
+
+const ChallengeHeader = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ${(props) => props.theme.textPrimary};
+  padding: 10px;
+  color: ${(props) => props.theme.contrast};
+`;
+
+const ChallengeIcon = styled.div`
+  font-size: 1.5rem;
+  margin-right: 10px;
+`;
+
+const ChallengeTitle = styled.h3`
+  margin: 0;
+  font-size: 1.2rem;
+`;
+
+const ChallengeContent = styled.div`
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.textPrimary};
+  padding: 15px;
+  font-size: 0.9rem;
+`;
+
+const ResultsContainer = styled.div`
+
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+`;
+
+const ResultCard = styled.div`
+  flex: 1 1 150px;
+  background-color: ${(props) => props.theme.headerPrimary};
+  border: 1px solid ${(props) => props.theme.textSecondary};
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+`;
+
+const ResultIcon = styled.div`
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: ${(props) => props.theme.accent};
+`;
+
+const ResultTitle = styled.h3`
+  font-size: 1.1rem;
+  color: ${(props) => props.theme.accent};
+  margin-bottom: 5px;
+`;
+
+const ResultContent = styled.p`
+  font-size: 0.9rem;
+  color: ${(props) => props.theme.contrast};
+`;
+
+
 const projectData = [
   {
     name: 'Lango',
@@ -314,6 +382,34 @@ const projectData = [
       'Gamification: Points, levels, and rewards to keep users motivated.',
       'Community Engagement: Discussion boards and live language practice with peers.',
       'Cross-platform: React and Node.js-powered web and mobile app.',
+    ],
+    challenges: [
+      {
+        type: 'challenge',
+        icon: <FaQuestionCircle />,
+        title: 'Balancing Simplicity with Functionality',
+        content:
+          'Creating a UI that is both intuitive for beginners and functional for advanced learners was a major challenge. Resolved this by conducting user testing and iterating on feedback to enhance usability.',
+      },
+      {
+        type: 'learning',
+        icon: <FaLightbulb />,
+        title: 'Real-time Data Challenges',
+        content:
+          'Encountered challenges with implementing real-time updates across various devices. Learned to optimize API performance and ensure consistent user experiences.',
+      },
+    ],
+    results: [
+      {
+        icon: <FaAnchor />,
+        title: 'User Growth',
+        content: 'Achieved a 200% increase in active users within the first quarter of release.',
+      },
+      {
+        icon: <FaGithub />,
+        title: 'Retention Rate',
+        content: 'Improved user retention by 40% through personalized learning paths.',
+      },
     ],
     figmaLink: 'https://figma.com',
     githubLink: 'https://github.com',
@@ -337,12 +433,43 @@ const projectData = [
       'Progress Tracking: Detailed logs and visual tracking of users’ mindfulness habits and improvements over time.',
       'Cross-platform: Planned development using React Native for both iOS and Android platforms.',
     ],
+    challenges: [
+      {
+        type: 'challenge',
+        icon: <FaQuestionCircle />,
+        title: 'Designing the User Experience',
+        content:
+          'Faced challenges in creating an intuitive user journey that didn’t overwhelm new users while still providing depth for advanced users. Learned how to balance simplicity with functionality.',
+      },
+      {
+        type: 'learning',
+        icon: <FaLightbulb />,
+        title: 'Startup Partnership Issues',
+        content:
+          'The project faced difficulties due to lack of commitment from my partner, ultimately leading to a decision to part ways. However, the design phase provided invaluable insights into managing a startup environment and navigating early-stage development challenges.',
+      },
+    ],
+    results: [
+      {
+        icon: <FaFigma />,
+        title: 'Prototype Completion',
+        content: 'Delivered a fully functional Figma prototype with high-fidelity designs and user flows. The prototype showcased interactive elements, custom user journeys, and an integrated habit tracker.',
+      },
+      {
+        icon: <FaSlideshare />,
+        title: 'Key Takeaways',
+        content: 'Gained significant experience in product design, wireframing, and managing a startup project, even though it didn’t reach full development.',
+      },
+    ],
     figmaLink: 'https://figma.com',
     githubLink: null,
-    canvaLink: 'https://www.canva.com/design/DAGYgmcPfAI/VcF52ta3kBPgxeWnYSBpkg/edit?utm_content=DAGYgmcPfAI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
+    canvaLink:
+      'https://www.canva.com/design/DAGYgmcPfAI/VcF52ta3kBPgxeWnYSBpkg/edit?utm_content=DAGYgmcPfAI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
     icon: <FaFigma />,
   },
 ];
+
+
 
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -369,7 +496,6 @@ const Projects = () => {
             {projectData.map((project) => (
               <ProjectCard key={project.name} onClick={() => handleCardClick(project.name)}>
                 <ProjectHeader>
-                  {project.icon}
                   <ProjectTitle>{project.name}</ProjectTitle>
                 </ProjectHeader>
                 <ProjectImage src={project.image} alt={`${project.name} Preview`} />
@@ -420,15 +546,8 @@ const Projects = () => {
         <ExpandedProject>
           <ExpandedHeader>
             <BackButton onClick={handleBackClick}>
-              <FaArrowLeft /> Back
+              <FaArrowLeft /> {selectedProjectData.name}
             </BackButton>
-          </ExpandedHeader>
-          <ExpandedContent>
-            <HeaderContent>
-              <ProjectDetails>
-                <ProjectIcon>{selectedProjectData.icon}</ProjectIcon>
-                <ProjectName>{selectedProjectData.name}</ProjectName>
-              </ProjectDetails>
               <LinksContainer>
                 {selectedProjectData?.figmaLink && (
                   <CircleLinkButton
@@ -461,6 +580,10 @@ const Projects = () => {
                   </CircleLinkButton>
                 )}
               </LinksContainer>
+          </ExpandedHeader>
+          <ExpandedContent>
+            <HeaderContent>
+              
             </HeaderContent>
             <Swiper
               modules={[Pagination]}
@@ -497,7 +620,28 @@ const Projects = () => {
               </FeaturesList>
             </SwiperSlide>
             <SwiperSlide>
-              
+            <FeaturesLabel>Challenges and Learnings</FeaturesLabel>
+            <ChallengesContainer>
+              {selectedProjectData.challenges.map((challenge, index) => (
+                <ChallengeCard key={index}>
+                  <ChallengeHeader>
+                    <ChallengeIcon>{challenge.icon}</ChallengeIcon>
+                    <ChallengeTitle>{challenge.title}</ChallengeTitle>
+                  </ChallengeHeader>
+                  <ChallengeContent>{challenge.content}</ChallengeContent>
+                </ChallengeCard>
+              ))}
+            </ChallengesContainer>
+            <FeaturesLabel>Results</FeaturesLabel>
+                <ResultsContainer>
+                  {selectedProjectData.results.map((result, index) => (
+                    <ResultCard key={index}>
+                      <ResultIcon>{result.icon}</ResultIcon>
+                      <ResultTitle>{result.title}</ResultTitle>
+                      <ResultContent>{result.content}</ResultContent>
+                    </ResultCard>
+                  ))}
+                </ResultsContainer>
             </SwiperSlide>
             </Swiper>
           </ExpandedContent>
