@@ -39,14 +39,30 @@ const ProjectCard = styled.div`
   flex: 1 1 300px;
   max-width: 350px;
   background-color: ${(props) => props.theme.contrast};
-  border: 1px solid ${(props) => props.theme.textPrimary};
+  border: 2px solid ${(props) => props.theme.contrast};
   border-bottom: none;
   border-radius: 5px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    border: 1px solid rgba(${(props) => {
+      const accent = props.theme.accent;
+      const rgb = accent.match(/\w\w/g).map((hex) => parseInt(hex, 16));
+      return `${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.75`;
+    }});
+    box-shadow: 0 0 50px rgba(${(props) => {
+      const accent = props.theme.accent;
+      const rgb = accent.match(/\w\w/g).map((hex) => parseInt(hex, 16));
+      return `${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.5`;
+    }});
+    transform: translateY(-5px);
+  }
 `;
+
 
 const ProjectHeader = styled.div`
   display: flex;
@@ -182,7 +198,7 @@ const ProjectName = styled.h2`
 
 const DescriptionLabel = styled.p`
   font-weight: bold;
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.accent};
   font-size: 18px;
   margin-top: 20px;
 `;
@@ -201,26 +217,26 @@ const SectionLabel = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  border-bottom: 2px solid ${(props) => props.theme.textPrimary};
+  border-bottom: 2px solid ${(props) => props.theme.accent};
   padding-bottom: 5px;
   margin-bottom: 10px;
 `;
 
 const SectionDescription = styled.p`
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.textSecondary};
   text-align: left;
 `;
 
 const SectionIcon = styled.div`
   font-size: 1.5rem;
   display: flex;
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.accent};
 `;
 
 const SectionText = styled.span`
   font-weight: bold;
   font-size: 18px;
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.accent};
 `;
 
 const SectionContainer = styled.div`
@@ -228,14 +244,14 @@ const SectionContainer = styled.div`
   gap: 20px;
   background-color: ${(props) => props.theme.background};
   border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.textPrimary};
+  border: 1px solid ${(props) => props.theme.accent};
   padding: 15px;
   margin-top: 20px;
 `;
 
 const FeaturesLabel = styled.p`
   font-weight: bold;
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.accent};
   font-size: 18px;
   margin-top: 20px;
 `;
@@ -303,8 +319,8 @@ const ChallengesContainer = styled.div`
 `;
 
 const ChallengeCard = styled.div`
-  border: 1px solid ${(props) => props.theme.textPrimary};
-  background-color: ${(props) => props.theme.background};
+  border: 1px solid ${(props) => props.theme.accent};
+  background-color: ${(props) => props.theme.textSecondary};
   border-radius: 5px;
   overflow: hidden;
 `;
@@ -312,24 +328,27 @@ const ChallengeCard = styled.div`
 const ChallengeHeader = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${(props) => props.theme.textPrimary};
+  background-color: ${(props) => props.theme.headerPrimary};
   padding: 10px;
-  color: ${(props) => props.theme.contrast};
+  border-bottom: 1px solid ${(props) => props.theme.accent};
+  color: ${(props) => props.theme.accent};
 `;
 
 const ChallengeIcon = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
 `;
 
 const ChallengeTitle = styled.h3`
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 `;
 
 const ChallengeContent = styled.div`
   background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.textPrimary};
+  color: ${(props) => props.theme.textSecondary};
   padding: 15px;
   font-size: 0.9rem;
 `;
@@ -344,7 +363,7 @@ const ResultsContainer = styled.div`
 const ResultCard = styled.div`
   flex: 1 1 150px;
   background-color: ${(props) => props.theme.headerPrimary};
-  border: 1px solid ${(props) => props.theme.textSecondary};
+  border: 1px solid ${(props) => props.theme.accent};
   border-radius: 5px;
   padding: 20px;
   text-align: center;
@@ -364,7 +383,7 @@ const ResultTitle = styled.h3`
 
 const ResultContent = styled.p`
   font-size: 0.9rem;
-  color: ${(props) => props.theme.contrast};
+  color: ${(props) => props.theme.textSecondary};
 `;
 
 
@@ -582,9 +601,6 @@ const Projects = () => {
               </LinksContainer>
           </ExpandedHeader>
           <ExpandedContent>
-            <HeaderContent>
-              
-            </HeaderContent>
             <Swiper
               modules={[Pagination]}
               pagination={{ clickable: true }}

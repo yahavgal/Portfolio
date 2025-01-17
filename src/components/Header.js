@@ -94,12 +94,12 @@ const NavLink = styled(Link)`
   padding: 8px 12px;
   border-radius: 5px;
   color: ${(props) => props.theme.textPrimary};
-  background-color: ${(props) => (props.isActive ? props.theme.textPrimary : 'transparent')};
-  color: ${(props) => (props.isActive ? props.theme.contrast : props.theme.textPrimary)};
+  background-color: ${(props) => (props.isActive ? props.theme.accent : 'transparent')};
+  color: ${(props) => (props.isActive ? props.theme.textPrimary : props.theme.textSecondary)};
   transition: all 0.3s;
 
   &:hover {
-    color: ${(props) => props.theme.accent};
+    color: ${(props) => props.theme.textPrimary};
   }
 `;
 
@@ -128,9 +128,10 @@ const Header = ({ toggleTheme, isDarkMode }) => {
           <NavLink to="/contact" isActive={isActive('/contact')}>Contact</NavLink>
         </NavLinks>
       </LeftSection>
-      <ToggleButton onClick={toggleTheme}>
+      {/* ToggleButton for toggling light/dark mode */}
+      {/* <ToggleButton onClick={toggleTheme}>
         {isDarkMode ? <FaSun /> : <FaMoon />}
-      </ToggleButton>
+      </ToggleButton> */}
       <MobileNavLinks isOpen={menuOpen}>
         <NavLink to="/" onClick={toggleMenu} isActive={isActive('/')}>Home</NavLink>
         <NavLink to="/about" onClick={toggleMenu} isActive={isActive('/about')}>About</NavLink>

@@ -10,7 +10,8 @@ import Contact from './pages/Contact';
 
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // State to toggle between light and dark mode, default is dark mode
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
