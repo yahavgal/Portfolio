@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaNodeJs, FaFigma, FaJava, FaDatabase, FaGit } from 'react-icons/fa'; // Adjusted verified icons
+import { FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaNodeJs, FaFigma, FaJava, FaDatabase, FaGit } from 'react-icons/fa';
+import HeadlineContainer from '../components/HeadlineContainer';
 
 // Styled Components for About Section
 const AboutContainer = styled.section`
@@ -8,32 +9,12 @@ const AboutContainer = styled.section`
   background-color: ${(props) => props.theme.background};
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensures footer sticks to the bottom */
+  justify-content: space-between;
   padding: 18px 20px;
 `;
 
 const ContentContainer = styled.div`
   flex: 1;
-`;
-
-const Headline = styled.h1`
-  font-size: 3rem;
-  color: ${(props) => props.theme.textPrimary};
-  margin: 0;
-
-  @media (max-width: 768px) {
-    font-size: 2.5rem; /* Adjust for mobile */
-  }
-`;
-
-const Tagline = styled.p`
-  font-size: 1.25rem;
-  color: ${(props) => props.theme.textSecondary};
-  margin-bottom: 30px;
-
-  @media (max-width: 768px) {
-    font-size: 1rem; /* Adjust for mobile */
-  }
 `;
 
 const SkillsSection = styled.div`
@@ -51,10 +32,10 @@ const Skill = styled.div`
   border: 2px solid ${(props) => props.theme.accent};
   border-radius: 5px;
   padding: 20px;
-  display: inline-flex; /* Ensures each skill behaves independently */
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
-  width: 100px; /* Set a consistent width */
+  width: 100px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
 
@@ -63,11 +44,11 @@ const Skill = styled.div`
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 
     svg {
-      transform: translateY(-10px) scale(0.9); /* Moves icon up and shrinks */
+      transform: translateY(-10px) scale(0.9);
     }
 
     span {
-      display: block; /* Show skill name */
+      display: block;
     }
   }
 
@@ -81,7 +62,7 @@ const Skill = styled.div`
     margin-top: 10px;
     font-size: 1rem;
     color: ${(props) => props.theme.textPrimary};
-    display: none; /* Initially hidden */
+    display: none;
   }
 `;
 
@@ -89,17 +70,17 @@ const Footer = styled.footer`
   background-color: ${(props) => props.theme.contrast};
   border-top: 2px solid ${(props) => props.theme.textSecondary};
   padding: 20px;
-  text-align: center; /* Placeholder styling for now */
+  text-align: center;
 `;
 
 const About = () => {
   return (
     <AboutContainer>
       <ContentContainer>
-        <Headline>Hi, I'm Yahav Gal.</Headline>
-        <Tagline>
-          With a keen eye for design and a deep understanding of development, I enjoy crafting seamless digital solutions that make a meaningful impact.
-        </Tagline>
+        <HeadlineContainer
+          title="Hi, I'm Yahav Gal."
+          tagline="With a keen eye for design and a deep understanding of development, I enjoy crafting seamless digital solutions that make a meaningful impact."
+        />
         <SkillsSection>
           <h2>My Skills</h2>
           <SkillsContainer>
@@ -142,10 +123,7 @@ const About = () => {
           </SkillsContainer>
         </SkillsSection>
       </ContentContainer>
-      <Footer>
-        {/* Footer content will be added here later */}
-        Footer placeholder content
-      </Footer>
+      <Footer>Footer placeholder content</Footer>
     </AboutContainer>
   );
 };
