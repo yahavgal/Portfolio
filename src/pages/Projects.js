@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaGithub, FaFigma, FaArrowLeft, FaSlideshare, FaAnchor, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules'; // Import modules from 'swiper/modules'
+import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css';
@@ -12,8 +12,8 @@ import HeadlineContainer from '../components/HeadlineContainer';
 
 // Styled Components for Projects Section
 const ProjectsContainer = styled.section`
-  background-color: ${(props) => props.theme.background};
   padding: 0 20px;
+  overflow: visible;
 `;
 
 const ProjectsGrid = styled.div`
@@ -21,6 +21,7 @@ const ProjectsGrid = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  overflow: visible;
 `;
 
 const ProjectCard = styled.div`
@@ -28,29 +29,22 @@ const ProjectCard = styled.div`
   height: 100%;
   max-width: 350px;
   background-color: ${(props) => props.theme.contrast};
-  border: 2px solid ${(props) => props.theme.contrast};
+  border: 1px solid ${(props) => props.theme.headerPrimary};
   border-bottom: none;
-  border-radius: 5px;
+  border-radius: 10px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
   cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: border 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    border: 1px solid rgba(${(props) => {
-      const accent = props.theme.accent;
-      const rgb = accent.match(/\w\w/g).map((hex) => parseInt(hex, 16));
-      return `${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.75`;
-    }});
-    box-shadow: 0 0 50px rgba(${(props) => {
-      const accent = props.theme.accent;
-      const rgb = accent.match(/\w\w/g).map((hex) => parseInt(hex, 16));
-      return `${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.5`;
-    }});
-    transform: translateY(-5px);
+    border: 1px solid ${(props) => props.theme.accent};
+    border-bottom: none;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 25px 10px rgba(${(props) => props.theme.accent}, 0.75);
   }
-
 `;
 
 
@@ -114,27 +108,37 @@ const ProjectDescription = styled.p`
 const LinksContainer = styled.div`
   display: flex;
   justify-content: center;
+  background-color: ${(props) => props.theme.accent};
 `;
 
 const LinkButton = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-  color: ${(props) => props.theme.accent};
-  border: 1px solid  ${(props) => props.theme.accent};
+  padding: 12px 15px;
+  color: ${(props) => props.theme.headerPrimary};
   text-decoration: none;
   flex: 1;
-  transition: background 0.3s;
-  background-color: ${(props) => props.theme.headerPrimary};
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
   svg {
-    margin-right: 5px;
+    margin-right: 8px;
+    font-size: 1.2rem;
   }
 
   &:hover {
-    opacity: 0.8;
+    background-color: ${(props) => props.theme.headerPrimary};
+    color: ${(props) => props.theme.accent};
+    transform: translateY(-2px);
+    opacity: 0.9;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
   }
 `;
+
 
 const ExpandedProject = styled.div`
   background-color: ${(props) => props.theme.contrast};
@@ -181,6 +185,11 @@ const ExpandedContent = styled.div`
   @media (max-width: 480px) {
     padding: 10px;
   }
+`;
+
+const ProjectLinks = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const DescriptionLabel = styled.p`
@@ -479,63 +488,63 @@ const Projects = () => {
           title="Bringing Ideas to Life"
           tagline="Explore the work I’ve built to solve problems, enhance experiences, and push boundaries."
           />
-          <ProjectsGrid>
-          <ProjectsSwiper
-            modules={[Pagination, Navigation]}
-            navigation
-            spaceBetween={30}
-            slidesPerView={1}
-          >
-            {projectData.map((project) => (
-              <SwiperSlide key={project.name}>
-                <ProjectCard onClick={() => handleCardClick(project.name)}>
-                  <ProjectHeader>
-                    <ProjectTitle>{project.name}</ProjectTitle>
-                  </ProjectHeader>
-                  <ProjectImage src={project.image} alt={`${project.name} Preview`} />
-                  <TechStack>
-                    {project.techStack.map((tech) => (
-                      <span key={tech}>{tech}</span>
-                    ))}
-                  </TechStack>
-                  <ProjectDescription>{project.shortDescription}</ProjectDescription>
-                  <LinksContainer>
-                    {project.figmaLink && (
-                      <LinkButton
-                        href={project.figmaLink}
-                        platform="figma"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaFigma /> Figma
-                      </LinkButton>
-                    )}
-                    {project.githubLink && (
-                      <LinkButton
-                        href={project.githubLink}
-                        platform="github"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaGithub /> GitHub
-                      </LinkButton>
-                    )}
-                    {project.canvaLink && (
-                      <LinkButton
-                        href={project.canvaLink}
-                        platform="canva"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaSlideshare /> Canva
-                      </LinkButton>
-                    )}
-                  </LinksContainer>
-                </ProjectCard>
-              </SwiperSlide>
-            ))}
-          </ProjectsSwiper>
-          </ProjectsGrid>
+            <ProjectsGrid>
+            <ProjectsSwiper
+              modules={[Pagination, Navigation]}
+              navigation
+              spaceBetween={30}
+              slidesPerView={1}
+            >
+              {projectData.map((project) => (
+                  <SwiperSlide key={project.name}>
+                    <ProjectCard onClick={() => handleCardClick(project.name)}>
+                      <ProjectHeader>
+                        <ProjectTitle>{project.name}</ProjectTitle>
+                      </ProjectHeader>
+                      <ProjectImage src={project.image} alt={`${project.name} Preview`} />
+                      <TechStack>
+                        {project.techStack.map((tech) => (
+                          <span key={tech}>{tech}</span>
+                        ))}
+                      </TechStack>
+                      <ProjectDescription>{project.shortDescription}</ProjectDescription>
+                      <LinksContainer>
+                        {project.figmaLink && (
+                          <LinkButton
+                            href={project.figmaLink}
+                            platform="figma"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaFigma /> Figma
+                          </LinkButton>
+                        )}
+                        {project.githubLink && (
+                          <LinkButton
+                            href={project.githubLink}
+                            platform="github"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaGithub /> GitHub
+                          </LinkButton>
+                        )}
+                        {project.canvaLink && (
+                          <LinkButton
+                            href={project.canvaLink}
+                            platform="canva"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaSlideshare /> Canva
+                          </LinkButton>
+                        )}
+                      </LinksContainer>
+                    </ProjectCard>
+                  </SwiperSlide>
+              ))}
+            </ProjectsSwiper>
+            </ProjectsGrid>
         </>
       )}
       {selectedProject && (
@@ -544,7 +553,7 @@ const Projects = () => {
             <BackButton onClick={handleBackClick}>
               <FaArrowLeft /> {selectedProjectData.name}
             </BackButton>
-              <LinksContainer>
+              <ProjectLinks>
                 {selectedProjectData?.figmaLink && (
                   <CircleLinkButton
                     href={selectedProjectData.figmaLink}
@@ -575,7 +584,7 @@ const Projects = () => {
                     <FaSlideshare />
                   </CircleLinkButton>
                 )}
-              </LinksContainer>
+              </ProjectLinks>
           </ExpandedHeader>
           <ExpandedContent>
             <Swiper

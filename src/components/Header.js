@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons
+import { FaBars, FaTimes } from 'react-icons/fa';
 
-/* 
+/*
   HeaderContainer:
   - Main container for the header.
   - Sets height, padding, and background color based on the theme.
+  - Adjusted height for mobile responsiveness.
 */
 const HeaderContainer = styled.header`
   display: flex;
@@ -14,12 +15,20 @@ const HeaderContainer = styled.header`
   align-items: center;
   height: 80px;
   padding: 0 20px;
-  background-color: ${(props) => props.theme.background};
+
+  @media (max-width: 768px) {
+    height: 60px;
+    padding: 0 15px;
+  }
+
+  @media (max-width: 480px) {
+    height: 50px;
+    padding: 0 10px;
+  }
 `;
 
-/* 
+/*
   ContentWrapper:
-  - Wrapper for the header's content.
   - Ensures elements are spaced and aligned properly.
   - Restricts maximum width for consistent layout.
 */
@@ -34,7 +43,7 @@ const ContentWrapper = styled.div`
   }
 `;
 
-/* 
+/*
   Spacer:
   - Used to create spacing between navigation and other header elements.
 */
@@ -42,7 +51,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-/* 
+/*
   NavLinks:
   - Container for navigation links.
   - Hidden on small screens to make way for the mobile menu.
@@ -54,15 +63,14 @@ const NavLinks = styled.nav`
   flex: 2;
 
   @media (max-width: 768px) {
-    display: none; /* Hide nav links on small screens */
+    display: none;
   }
 `;
 
-/* 
+/*
   MobileMenu:
   - Icon button for toggling the mobile menu.
   - Displayed only on small screens.
-  - Positioned on the left side for mobile view.
 */
 const MobileMenu = styled.div`
   display: none;
@@ -72,37 +80,37 @@ const MobileMenu = styled.div`
   @media (max-width: 768px) {
     display: block;
     cursor: pointer;
-    position: absolute;
-    left: 20px; /* Position the icon on the left */
   }
 `;
 
-/* 
+/*
   MobileNavLinks:
   - Sidebar navigation for mobile screens.
-  - Positioned on the left side of the viewport.
-  - Toggles visibility based on the `isOpen` state.
+  - Adjusted height dynamically for different screen sizes.
 */
 const MobileNavLinks = styled.div`
-  position: fixed; /* Stays within the viewport */
-  top: 80px;
-  left: 0; /* Aligns to the left edge */
-  width: 250px; /* Fixed width for the menu */
-  height: calc(100vh - 80px); /* Fills remaining height below the header */
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 250px;
+  height: calc(100vh - 60px);
   background-color: ${(props) => props.theme.background};
   padding: 20px 0;
-  text-align: left; /* Aligns content to the left */
+  text-align: left;
   display: ${(props) => (props.isOpen ? 'block' : 'none')};
-  z-index: 100; /* Keeps it above other elements */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for the sidebar */
+  z-index: 100;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 480px) {
+    top: 50px;
+    height: calc(100vh - 50px);
+  }
 `;
 
-/* 
+/*
   NavLink:
   - Styled Link component for navigation.
   - Highlights the active link using background and text colors.
-  - Includes hover effects for interactivity.
-  - Ensures consistent active styles for both desktop and mobile views.
 */
 const NavLink = styled(Link)`
   text-decoration: none;
@@ -119,26 +127,24 @@ const NavLink = styled(Link)`
   }
 `;
 
-/* 
+/*
   MobileNavLink:
   - Specific styling for links in the mobile navigation menu.
-  - Includes active state styling for the current route.
 */
 const MobileNavLink = styled(NavLink)`
   display: block;
-  margin: 15px 20px; /* Adds margin around the links */
+  margin: 15px 20px;
   font-size: 1.2rem;
 `;
 
-/* 
+/*
   Header Component:
-  - Main header component.
-  - Displays navigation links and a theme toggle button.
+  - Displays navigation links and a mobile menu.
   - Includes responsive mobile menu functionality with active route styling.
 */
 const Header = ({ toggleTheme, isDarkMode }) => {
-  const [menuOpen, setMenuOpen] = useState(false); // State to toggle the mobile menu
-  const location = useLocation(); // Hook to get the current location
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   /* Toggles the mobile menu's visibility */
   const toggleMenu = () => {
@@ -151,15 +157,10 @@ const Header = ({ toggleTheme, isDarkMode }) => {
   return (
     <HeaderContainer>
       <ContentWrapper>
-        {/* Mobile menu icon for small screens, positioned on the left */}
         <MobileMenu onClick={toggleMenu}>
           {menuOpen ? <FaTimes /> : <FaBars />}
         </MobileMenu>
-
-        {/* Left spacer for alignment */}
         <Spacer />
-
-        {/* Navigation links for larger screens */}
         <NavLinks>
           <NavLink to="/" isActive={isActive('/')}>Home</NavLink>
           <NavLink to="/about" isActive={isActive('/about')}>About</NavLink>
@@ -167,8 +168,6 @@ const Header = ({ toggleTheme, isDarkMode }) => {
           <NavLink to="/contact" isActive={isActive('/contact')}>Contact</NavLink>
         </NavLinks>
       </ContentWrapper>
-
-      {/* Mobile navigation sidebar */}
       <MobileNavLinks isOpen={menuOpen}>
         <MobileNavLink to="/" onClick={toggleMenu} isActive={isActive('/')}>Home</MobileNavLink>
         <MobileNavLink to="/about" onClick={toggleMenu} isActive={isActive('/about')}>About</MobileNavLink>

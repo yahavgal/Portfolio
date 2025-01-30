@@ -2,26 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaPhone, FaSuitcase } from 'react-icons/fa'; // Import icons from react-icons
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import HeadlineContainer from '../components/HeadlineContainer'; // Import custom HeadlineContainer component
+import HeadlineContainer from '../components/HeadlineContainer'; // Import custom components
+import Section from '../components/SectionContainer'; // Import custom components
 
 /* 
   Styled Components
   - Define reusable and theme-aware styles for the Home page.
 */
-
-/* 
-  HomeContainer:
-  - Main container for the Home section.
-  - Occupies full viewport height and adapts background color based on the theme.
-*/
-const HomeContainer = styled.section`
-  height: 100vh;
-  background-color: ${(props) => props.theme.background};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 18px 20px;
-`;
 
 /* 
   CTAContainer:
@@ -134,10 +121,10 @@ const Home = () => {
   const navigate = useNavigate(); // Initialize useNavigate hook for navigation
 
   return (
-    <HomeContainer>
+    <Section>
       {/* HeadlineContainer displays the main title and tagline */}
       <HeadlineContainer
-        title="Creating Modern Digital Experiences"
+        title="Code Meets Intuition"
         tagline="Full-Stack Developer & Product Designer"
       />
       <CTAContainer>
@@ -149,7 +136,7 @@ const Home = () => {
           <FaSuitcase /> View my Work
         </OutlineButton>
       </CTAContainer>
-    </HomeContainer>
+    </Section>
   );
 };
 
