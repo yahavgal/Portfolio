@@ -22,7 +22,7 @@ const SkillsContainer = styled.div`
 `;
 
 const Skill = styled.div`
-  background-color: ${(props) => props.theme.contrast};
+  background-color: ${(props) => props.theme.componentBackground};
   border: 2px solid ${(props) => props.theme.accent};
   border-radius: 5px;
   padding: 20px;
@@ -61,7 +61,7 @@ const Skill = styled.div`
 `;
 
 const Footer = styled.footer`
-  background-color: ${(props) => props.theme.contrast};
+  background-color: ${(props) => props.theme.componentBackground};
   border-top: 2px solid ${(props) => props.theme.textSecondary};
   padding: 20px;
   text-align: center;

@@ -1,23 +1,22 @@
 // themes.js
 // This file contains the theme object for the light and dark themes.
 export const lightTheme = {
-  background: '#F9F5EB',
-  textPrimary: '#111827',
-  headerPrimary: '#111827',
-  textSecondary: '#F9F5EB',
-  accent: '#8B5CF6',
-  contrast: '#FFFFFF',
+  background: '#EDEFF2',
+  textPrimary: '#1F2937',
+  headerPrimary: '#D1D5DB',
+  textSecondary: '#6B7280',
+  accent: '#4F46E5',
+  componentBackground: '#F5F6FA',
 };
-  
+
 export const darkTheme = {
   background: '#1A232E',
   textPrimary: '#FFFFFF',
   headerPrimary: '#111827',
   textSecondary: '#6D7D8D',
   accent: '#8B5CF6',
-  contrast: '#2C3E50',
+  componentBackground: '#25313F',
 };
 
 
 
-  

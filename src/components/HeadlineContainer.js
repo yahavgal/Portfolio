@@ -20,20 +20,24 @@ const HeadlineContainer = styled.div`
   }
 
   h1 {
-    font-size: 3rem;
-    color: ${(props) => props.theme.textPrimary};
-    margin: 0;
-    line-height: 1.2;
-    word-break: break-word;
+  font-size: 3rem;
+  background: linear-gradient(90deg, ${(props) => props.theme.accent} 0%, #4F46E5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: ${(props) => props.theme.textPrimary}; /* Fallback for non-gradient browsers */
+  margin: 0;
+  line-height: 1.2;
+  word-break: break-word;
 
-    @media (max-width: 768px) {
-      font-size: 2.5rem;
-    }
-
-    @media (max-width: 480px) {
-      font-size: 2rem;
-    }
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
   }
+
+  @media (max-width: 480px) {
+    font-size: 2rem;
+  }
+}
+
 
   p {
     font-size: 1.25rem;

@@ -52,7 +52,7 @@ const CTAButton = styled.button`
   /* Hover State */
   &:hover {
     background-color: ${(props) => props.theme.textPrimary}; /* Background matches primary text color */
-    color: ${(props) => props.theme.contrast}; /* Text contrasts against hover background */
+    color: ${(props) => props.theme.componentBackground}; /* Text componentBackgrounds against hover background */
     transform: scale(1.05); /* Slight scale effect */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Adds subtle shadow for hover feedback */
   }
@@ -89,7 +89,7 @@ const CTAButton = styled.button`
 
   &:hover svg {
     transform: scale(1.2); /* Icons slightly enlarge on hover */
-    color: ${(props) => props.theme.contrast}; /* Icon color changes for hover effect */
+    color: ${(props) => props.theme.componentBackground}; /* Icon color changes for hover effect */
   }
 `;
 
@@ -107,7 +107,7 @@ const OutlineButton = styled(CTAButton)`
   /* Hover State: Switches background and text colors */
   &:hover {
     background-color: ${(props) => props.theme.textPrimary};
-    color: ${(props) => props.theme.contrast};
+    color: ${(props) => props.theme.componentBackground};
   }
 `;
 

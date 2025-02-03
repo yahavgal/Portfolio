@@ -6,29 +6,36 @@ import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css';
-import '../custom-swiper.css';
 import HeadlineContainer from '../components/HeadlineContainer';
+import Section from '../components/SectionContainer'; // Import custom components
 
 
 // Styled Components for Projects Section
-const ProjectsContainer = styled.section`
-  padding: 0 20px;
-  overflow: visible;
-`;
-
-const ProjectsGrid = styled.div`
+const SwiperContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
   justify-content: center;
-  overflow: visible;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
+  padding: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 const ProjectCard = styled.div`
   flex: 1 1 300px;
-  height: 100%;
   max-width: 350px;
-  background-color: ${(props) => props.theme.contrast};
+  background-color: ${(props) => props.theme.componentBackground};
   border: 1px solid ${(props) => props.theme.headerPrimary};
   border-bottom: none;
   border-radius: 10px;
@@ -85,23 +92,11 @@ const TechStack = styled.div`
   }
 `;
 
-const ProjectsSwiper = styled(Swiper)`
-  flex: 1;
-  width: 100%;
-  .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
-
-
 const ProjectDescription = styled.p`
   padding: 15px;
   font-size: 1rem;
   color: ${(props) => props.theme.textPrimary};
-  background-color: ${(props) => props.theme.contrast};
+  background-color: ${(props) => props.theme.componentBackground};
   flex-grow: 1;
 `;
 
@@ -140,11 +135,29 @@ const LinkButton = styled.a`
 `;
 
 
+/* 
+  ExpandedContent:
+  - Main content area for expanded project view.
+  - Adjusts padding dynamically.
+*/
+
 const ExpandedProject = styled.div`
-  background-color: ${(props) => props.theme.contrast};
-  border: 2px solid  ${(props) => props.theme.headerPrimary};
-  border-radius: 5px;
+  background-color: ${(props) => props.theme.componentBackground};
+  border: 2px solid ${(props) => props.theme.headerPrimary};
+  border-radius: 10px;
+  width: 80%; /* Prevent it from stretching too wide */
+  max-width: 900px; /* Limit maximum width */
+  height: auto;
+  margin: auto; /* Centers it properly */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 768px) {
+    width: 95%;
+  }
 `;
+
 
 const ExpandedHeader = styled.div`
   background-color:  ${(props) => props.theme.headerPrimary};
@@ -152,7 +165,7 @@ const ExpandedHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: ${(props) => props.theme.contrast};
+  color: ${(props) => props.theme.componentBackground};
 `;
 
 const BackButton = styled.button`
@@ -174,36 +187,35 @@ const BackButton = styled.button`
   }
 `;
 
-/* 
-  ExpandedContent:
-  - Main content area for expanded project view.
-  - Adjusts padding dynamically.
-*/
 const ExpandedContent = styled.div`
-  padding: 20px;
+  padding: 25px 30px;
+  height: auto;
 
-  @media (max-width: 480px) {
-    padding: 10px;
+  @media (max-width: 768px) {
+    padding: 15px;
   }
 `;
+
 
 const ProjectLinks = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-const DescriptionLabel = styled.p`
-  font-weight: bold;
-  color: ${(props) => props.theme.accent};
-  font-size: 18px;
-  margin-top: 20px;
-`;
-
 const DescriptionText = styled.p`
   color: ${(props) => props.theme.textPrimary};
+  font-size: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 `;
 
-const Section = styled.div`
+const ProblemSection = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -216,23 +228,43 @@ const SectionLabel = styled.div`
   border-bottom: 2px solid ${(props) => props.theme.accent};
   padding-bottom: 5px;
   margin-bottom: 10px;
+  font-size: 1.2rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const SectionDescription = styled.p`
   color: ${(props) => props.theme.textSecondary};
   text-align: left;
+  font-size: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 `;
 
 const SectionIcon = styled.div`
   font-size: 1.5rem;
   display: flex;
   color: ${(props) => props.theme.accent};
-`;
 
-const SectionText = styled.span`
-  font-weight: bold;
-  font-size: 18px;
-  color: ${(props) => props.theme.accent};
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const SectionContainer = styled.div`
@@ -248,8 +280,15 @@ const SectionContainer = styled.div`
 const FeaturesLabel = styled.p`
   font-weight: bold;
   color: ${(props) => props.theme.accent};
-  font-size: 18px;
-  margin-top: 20px;
+  font-size: 1.125rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+  }
 `;
 
 const FeaturesList = styled.ul`
@@ -260,7 +299,15 @@ const FeaturesList = styled.ul`
 
 const FeatureItem = styled.li`
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 `;
 
 const CircleLinkButton = styled.a`
@@ -282,19 +329,32 @@ const CircleLinkButton = styled.a`
 
   svg {
     font-size: 1.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.3rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
   }
 `;
 
 
 const ChallengesContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 15px;
-  margin-top: 20px;
+  flex-wrap: wrap; /* Ensures proper wrapping */
+  justify-content: center;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 15px;
+  }
 `;
 
 const ChallengeCard = styled.div`
-  border: 1px solid ${(props) => props.theme.accent};
+
   background-color: ${(props) => props.theme.background};
   border-radius: 5px;
   overflow: hidden;
@@ -305,7 +365,7 @@ const ChallengeHeader = styled.div`
   align-items: center;
   background-color: ${(props) => props.theme.headerPrimary};
   padding: 10px;
-  border-bottom: 1px solid ${(props) => props.theme.accent};
+
   color: ${(props) => props.theme.accent};
 `;
 
@@ -314,11 +374,27 @@ const ChallengeIcon = styled.div`
   margin-right: 10px;
   display: flex;
   align-items: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const ChallengeTitle = styled.h3`
   margin: 0;
   font-size: 1.1rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const ChallengeContent = styled.div`
@@ -326,10 +402,17 @@ const ChallengeContent = styled.div`
   color: ${(props) => props.theme.textSecondary};
   padding: 15px;
   font-size: 0.9rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const ResultsContainer = styled.div`
-
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
@@ -348,17 +431,41 @@ const ResultIcon = styled.div`
   font-size: 2rem;
   margin-bottom: 10px;
   color: ${(props) => props.theme.accent};
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ResultTitle = styled.h3`
   font-size: 1.1rem;
   color: ${(props) => props.theme.accent};
   margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const ResultContent = styled.p`
   font-size: 0.9rem;
   color: ${(props) => props.theme.textSecondary};
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 
@@ -481,70 +588,87 @@ const Projects = () => {
   );
 
   return (
-    <ProjectsContainer>
+    <Section>
+      <HeadlineContainer
+        title="Bringing Ideas to Life"
+        tagline="Explore the work I’ve built to solve problems, enhance experiences, and push boundaries."
+      />
       {!selectedProject && (
         <>
-          <HeadlineContainer
-          title="Bringing Ideas to Life"
-          tagline="Explore the work I’ve built to solve problems, enhance experiences, and push boundaries."
-          />
-            <ProjectsGrid>
-            <ProjectsSwiper
+          <SwiperContainer>
+            <Swiper
               modules={[Pagination, Navigation]}
               navigation
-              spaceBetween={30}
+              spaceBetween={10}
               slidesPerView={1}
+              centeredSlides={true}
+              style={{
+                width: '100%',
+                maxWidth: '480px',
+                minWidth: '250px',
+                overflow: 'hidden'
+              }}
             >
+
               {projectData.map((project) => (
-                  <SwiperSlide key={project.name}>
-                    <ProjectCard onClick={() => handleCardClick(project.name)}>
-                      <ProjectHeader>
-                        <ProjectTitle>{project.name}</ProjectTitle>
-                      </ProjectHeader>
-                      <ProjectImage src={project.image} alt={`${project.name} Preview`} />
-                      <TechStack>
-                        {project.techStack.map((tech) => (
-                          <span key={tech}>{tech}</span>
-                        ))}
-                      </TechStack>
-                      <ProjectDescription>{project.shortDescription}</ProjectDescription>
-                      <LinksContainer>
-                        {project.figmaLink && (
-                          <LinkButton
-                            href={project.figmaLink}
-                            platform="figma"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <FaFigma /> Figma
-                          </LinkButton>
-                        )}
-                        {project.githubLink && (
-                          <LinkButton
-                            href={project.githubLink}
-                            platform="github"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <FaGithub /> GitHub
-                          </LinkButton>
-                        )}
-                        {project.canvaLink && (
-                          <LinkButton
-                            href={project.canvaLink}
-                            platform="canva"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <FaSlideshare /> Canva
-                          </LinkButton>
-                        )}
-                      </LinksContainer>
-                    </ProjectCard>
-                  </SwiperSlide>
+                <SwiperSlide
+                  key={project.name}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                    maxWidth: '100%',
+                  }}
+                >
+                  <ProjectCard onClick={() => handleCardClick(project.name)}>
+                    <ProjectHeader>
+                      <ProjectTitle>{project.name}</ProjectTitle>
+                    </ProjectHeader>
+                    <ProjectImage src={project.image} alt={`${project.name} Preview`} />
+                    <TechStack>
+                      {project.techStack.map((tech) => (
+                        <span key={tech}>{tech}</span>
+                      ))}
+                    </TechStack>
+                    <ProjectDescription>{project.shortDescription}</ProjectDescription>
+                    <LinksContainer>
+                      {project.figmaLink && (
+                        <LinkButton
+                          href={project.figmaLink}
+                          platform="figma"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaFigma /> Figma
+                        </LinkButton>
+                      )}
+                      {project.githubLink && (
+                        <LinkButton
+                          href={project.githubLink}
+                          platform="github"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaGithub /> GitHub
+                        </LinkButton>
+                      )}
+                      {project.canvaLink && (
+                        <LinkButton
+                          href={project.canvaLink}
+                          platform="canva"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaSlideshare /> Canva
+                        </LinkButton>
+                      )}
+                    </LinksContainer>
+                  </ProjectCard>
+                </SwiperSlide>
               ))}
-            </ProjectsSwiper>
-            </ProjectsGrid>
+            </Swiper>
+          </SwiperContainer>
         </>
       )}
       {selectedProject && (
@@ -553,104 +677,110 @@ const Projects = () => {
             <BackButton onClick={handleBackClick}>
               <FaArrowLeft /> {selectedProjectData.name}
             </BackButton>
-              <ProjectLinks>
-                {selectedProjectData?.figmaLink && (
-                  <CircleLinkButton
-                    href={selectedProjectData.figmaLink}
-                    platform="figma"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaFigma />
-                  </CircleLinkButton>
-                )}
-                {selectedProjectData?.githubLink && (
-                  <CircleLinkButton
-                    href={selectedProjectData.githubLink}
-                    platform="github"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </CircleLinkButton>
-                )}
-                {selectedProjectData?.canvaLink && (
-                  <CircleLinkButton
-                    href={selectedProjectData.canvaLink}
-                    platform="canva"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaSlideshare />
-                  </CircleLinkButton>
-                )}
-              </ProjectLinks>
+            <ProjectLinks>
+              {selectedProjectData?.figmaLink && (
+                <CircleLinkButton
+                  href={selectedProjectData.figmaLink}
+                  platform="figma"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaFigma />
+                </CircleLinkButton>
+              )}
+              {selectedProjectData?.githubLink && (
+                <CircleLinkButton
+                  href={selectedProjectData.githubLink}
+                  platform="github"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaGithub />
+                </CircleLinkButton>
+              )}
+              {selectedProjectData?.canvaLink && (
+                <CircleLinkButton
+                  href={selectedProjectData.canvaLink}
+                  platform="canva"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaSlideshare />
+                </CircleLinkButton>
+              )}
+            </ProjectLinks>
           </ExpandedHeader>
           <ExpandedContent>
             <Swiper
-              modules={[Pagination]}
-              pagination={{ clickable: true }}
+              modules={[Pagination, Navigation]}
+              pagination={{
+                clickable: true,
+                el: '.custom-pagination' /* Custom pagination container */
+              }}
+              navigation /* Enables next/prev buttons */
               spaceBetween={50}
             >
-            <SwiperSlide>
-              <DescriptionLabel>Description</DescriptionLabel>
-              <DescriptionText>{selectedProjectData.description}</DescriptionText>
-              <SectionContainer>
-                <Section>
-                  <SectionLabel>
-                    <SectionIcon>
-                      <FaQuestionCircle />
-                    </SectionIcon>
-                    <SectionText>Problem</SectionText>
-                  </SectionLabel>
-                  <SectionDescription>{selectedProjectData.problem}</SectionDescription>
-                </Section>
-                <Section>
-                  <SectionLabel>
-                    <SectionIcon>
-                      <FaLightbulb />
-                    </SectionIcon>
-                    <SectionText>Solution</SectionText>
-                  </SectionLabel>
-                  <SectionDescription>{selectedProjectData.solution}</SectionDescription>
-                </Section>
-              </SectionContainer>
-              <FeaturesLabel>Key Features</FeaturesLabel>
-              <FeaturesList>
-                {selectedProjectData.keyFeatures.map((feature, index) => (
-                  <FeatureItem key={index}>{feature}</FeatureItem>
-                ))}
-              </FeaturesList>
-            </SwiperSlide>
-            <SwiperSlide>
-            <FeaturesLabel>Challenges and Learnings</FeaturesLabel>
-            <ChallengesContainer>
-              {selectedProjectData.challenges.map((challenge, index) => (
-                <ChallengeCard key={index}>
-                  <ChallengeHeader>
-                    <ChallengeIcon>{challenge.icon}</ChallengeIcon>
-                    <ChallengeTitle>{challenge.title}</ChallengeTitle>
-                  </ChallengeHeader>
-                  <ChallengeContent>{challenge.content}</ChallengeContent>
-                </ChallengeCard>
-              ))}
-            </ChallengesContainer>
-            <FeaturesLabel>Results</FeaturesLabel>
-                <ResultsContainer>
-                  {selectedProjectData.results.map((result, index) => (
-                    <ResultCard key={index}>
-                      <ResultIcon>{result.icon}</ResultIcon>
-                      <ResultTitle>{result.title}</ResultTitle>
-                      <ResultContent>{result.content}</ResultContent>
-                    </ResultCard>
-                  ))}
-                </ResultsContainer>
-            </SwiperSlide>
+              <div className="custom-pagination" style={{ textAlign: "center", marginTop: "15px" }}>
+                <SwiperSlide>
+                  <FeaturesLabel>Description</FeaturesLabel>
+                  <DescriptionText>{selectedProjectData.description}</DescriptionText>
+                  <SectionContainer>
+                    <ProblemSection>
+                      <SectionLabel>
+                        <SectionIcon>
+                          <FaQuestionCircle />
+                        </SectionIcon>
+                        <FeaturesLabel>Problem</FeaturesLabel>
+                      </SectionLabel>
+                      <SectionDescription>{selectedProjectData.problem}</SectionDescription>
+                    </ProblemSection>
+                    <ProblemSection>
+                      <SectionLabel>
+                        <SectionIcon>
+                          <FaLightbulb />
+                        </SectionIcon>
+                        <FeaturesLabel>Solution</FeaturesLabel>
+                      </SectionLabel>
+                      <SectionDescription>{selectedProjectData.solution}</SectionDescription>
+                    </ProblemSection>
+                  </SectionContainer>
+                  <FeaturesLabel>Key Features</FeaturesLabel>
+                  <FeaturesList>
+                    {selectedProjectData.keyFeatures.map((feature, index) => (
+                      <FeatureItem key={index}>{feature}</FeatureItem>
+                    ))}
+                  </FeaturesList>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <FeaturesLabel>Challenges and Learnings</FeaturesLabel>
+                  <ChallengesContainer>
+                    {selectedProjectData.challenges.map((challenge, index) => (
+                      <ChallengeCard key={index}>
+                        <ChallengeHeader>
+                          <ChallengeIcon>{challenge.icon}</ChallengeIcon>
+                          <ChallengeTitle>{challenge.title}</ChallengeTitle>
+                        </ChallengeHeader>
+                        <ChallengeContent>{challenge.content}</ChallengeContent>
+                      </ChallengeCard>
+                    ))}
+                  </ChallengesContainer>
+                  <FeaturesLabel>Results</FeaturesLabel>
+                  <ResultsContainer>
+                    {selectedProjectData.results.map((result, index) => (
+                      <ResultCard key={index}>
+                        <ResultIcon>{result.icon}</ResultIcon>
+                        <ResultTitle>{result.title}</ResultTitle>
+                        <ResultContent>{result.content}</ResultContent>
+                      </ResultCard>
+                    ))}
+                  </ResultsContainer>
+                </SwiperSlide>
+              </div>
             </Swiper>
           </ExpandedContent>
         </ExpandedProject>
       )}
-    </ProjectsContainer>
+    </Section>
   );
 };
 

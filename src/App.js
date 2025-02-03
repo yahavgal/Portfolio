@@ -10,13 +10,22 @@ import Contact from './pages/Contact';
 
 /* 
   AppContainer:
-  - The main wrapper for the app's content.
-  - Adds a theme-aware background that applies across all pages.
-  - Allows for decorative elements like gradients or shapes.
+  - Ensures the app takes the full viewport height.
+  - Uses flex to make pages take remaining space.
 */
 const AppContainer = styled.div`
-  min-height: 100vh;
+  height: 100vh; /* Ensures full viewport height */
+  display: flex;
+  flex-direction: column;
   background: ${(props) => props.theme.background};
+`;
+
+/* 
+  PageWrapper:
+  - Ensures the content below the header fills the remaining space.
+*/
+const PageWrapper = styled.div`
+  flex: 1; /* Ensures content fills remaining space */
   display: flex;
   flex-direction: column;
 `;
@@ -31,15 +40,16 @@ function App() {
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <Router>
-        {/* Add the styled AppContainer as the root element */}
         <AppContainer>
           <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
+          <PageWrapper>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </PageWrapper>
         </AppContainer>
       </Router>
     </ThemeProvider>
