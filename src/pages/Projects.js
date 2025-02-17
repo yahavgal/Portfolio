@@ -50,7 +50,6 @@ const ProjectCard = styled.div`
   &:hover {
     border: 1px solid ${(props) => props.theme.accent};
     border-bottom: none;
-    transform: scale(1.05);
     box-shadow: 0px 0px 25px 10px rgba(${(props) => props.theme.accent}, 0.75);
   }
 `;
@@ -137,56 +136,62 @@ const LinkButton = styled.a`
 
 const projectData = [
   {
-    name: 'Lango',
+    name: 'Shrine',
     image: 'project-preview.jpg',
-    techStack: ['Next.js', 'TailwindCSS', 'PostgreSQL'],
-    shortDescription: 'A language learning app with real-time updates.',
-    description: 'A language learning app with seamless UX and real-time updates.',
-    problem: 'Language learners face difficulty in tracking progress effectively.',
-    solution: 'Developed an intuitive platform with real-time progress tracking.',
+    techStack: ['Figma', 'Photoshop', 'Balsamiq'],
+    shortDescription: 'A mindfulness app for daily growth.',
+    description:
+      'A holistic platform designed to help individuals organize and engage in mindfulness activities. The project aimed to provide users with tools for daily mindfulness exercises, guided meditations, and a way to track their personal growth over time.',
+    problem:
+      'Users often struggle to maintain consistent mindfulness practices due to the lack of structure and personal engagement in existing apps. They also find it difficult to balance mindfulness activities with their busy schedules.',
+    solution:
+      'Designed and prototyped an app that integrates daily mindfulness activities, personal habit tracking, and guided meditation sessions. The platform featured customized reminders and user journeys to help users stay committed to their mental well-being goals.',
     keyFeatures: [
-      'Adaptive Learning Paths: Tailored courses based on user proficiency.',
-      'Gamification: Points, levels, and rewards to keep users motivated.',
-      'Community Engagement: Discussion boards and live language practice with peers.',
-      'Cross-platform: React and Node.js-powered web and mobile app.',
+      'Personalized Mindfulness Plans: Users could set their goals and receive tailored meditation and mindfulness routines.',
+      'Daily Reminders and Notifications: Customizable reminders to help users stick to their mindfulness practice, even on hectic days.',
+      'Progress Tracking: Detailed logs and visual tracking of users’ mindfulness habits and improvements over time.',
+      'Cross-platform: Planned development using React Native for both iOS and Android platforms.',
     ],
     screenshots: [
-      '/chatbot_shrine.jpg',
-      '/chatbot_shrine.jpg',
-      '/chatbot_shrine.jpg'
+      '/shrine_screenshot_1.png',
+      '/shrine_screenshot_2.png',
+      '/shrine_screenshot_3.png',
+      '/shrine_screenshot_4.png',
+      '/shrine_screenshot_5.png'
     ],
     challenges: [
       {
         type: 'challenge',
         icon: <FaQuestionCircle />,
-        title: 'Balancing Simplicity with Functionality',
+        title: 'Designing the User Experience',
         content:
-          'Creating a UI that is both intuitive for beginners and functional for advanced learners was a major challenge. Resolved this by conducting user testing and iterating on feedback to enhance usability.',
+          'Faced challenges in creating an intuitive user journey that didn’t overwhelm new users while still providing depth for advanced users. Learned how to balance simplicity with functionality.',
       },
       {
         type: 'learning',
         icon: <FaLightbulb />,
-        title: 'Real-time Data Challenges',
+        title: 'Startup Partnership Issues',
         content:
-          'Encountered challenges with implementing real-time updates across various devices. Learned to optimize API performance and ensure consistent user experiences.',
+          'The project faced difficulties due to lack of commitment from my partner, ultimately leading to a decision to part ways. However, the design phase provided invaluable insights into managing a startup environment and navigating early-stage development challenges.',
       },
     ],
     results: [
       {
-        icon: <FaAnchor />,
-        title: 'User Growth',
-        content: 'Achieved a 200% increase in active users within the first quarter of release.',
+        icon: <FaFigma />,
+        title: 'Prototype Completion',
+        content: 'Delivered a fully functional Figma prototype with high-fidelity designs and user flows. The prototype showcased interactive elements, custom user journeys, and an integrated habit tracker.',
       },
       {
-        icon: <FaGithub />,
-        title: 'Retention Rate',
-        content: 'Improved user retention by 40% through personalized learning paths.',
+        icon: <FaSlideshare />,
+        title: 'Key Takeaways',
+        content: 'Gained significant experience in product design, wireframing, and managing a startup project, even though it didn’t reach full development.',
       },
     ],
     figmaLink: 'https://figma.com',
-    githubLink: 'https://github.com',
-    canvaLink: null,
-    icon: <FaAnchor />,
+    githubLink: null,
+    canvaLink:
+      'https://www.canva.com/design/DAGYgmcPfAI/VcF52ta3kBPgxeWnYSBpkg/edit?utm_content=DAGYgmcPfAI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
+    icon: <FaFigma />,
   },
   {
     name: 'Shrine',
@@ -208,7 +213,9 @@ const projectData = [
     screenshots: [
       '/chatbot_shrine.jpg',
       '/chatbot_shrine.jpg',
-      '/chatbot_shrine.jpg'
+      '/chatbot_shrine.jpg',
+      '/chatbot_shrine.jpg',
+      '/chatbot_shrine.jpg',
     ],
     challenges: [
       {
@@ -257,13 +264,14 @@ const Projects = () => {
 
       {!selectedProject ? (
         <SwiperContainer>
-          <Swiper
-            modules={[Pagination, Navigation]}
-            navigation
-            spaceBetween={10}
-            slidesPerView={1}
-            centeredSlides
-          >
+        <Swiper
+          modules={[Pagination, Navigation]}
+          
+          navigation
+          spaceBetween={10}
+          slidesPerView={1}
+          style={{ width: '100%', overflow: 'hidden' }}
+        >
             {projectData.map((project) => (
               <SwiperSlide key={project.name} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <ProjectCard onClick={() => setSelectedProject(project)}>

@@ -14,36 +14,39 @@ const HeadlineContainer = styled.div`
   justify-content: center;
   text-align: center;
   margin-bottom: 20px;
+  padding-bottom: 10px; /* Adds spacing for better flow */
 
   @media (max-width: 768px) {
     gap: 5px; /* Increased gap for tablets */
   }
 
   h1 {
-  font-size: 3rem;
-  background: linear-gradient(90deg, ${(props) => props.theme.accent} 0%, #4F46E5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: ${(props) => props.theme.textPrimary}; /* Fallback for non-gradient browsers */
-  margin: 0;
-  line-height: 1.2;
-  word-break: break-word;
+    font-size: 3rem;
+    background: linear-gradient(90deg, ${(props) => props.theme.accent} 0%, 
+                                       ${(props) => props.theme.accentLight || '#6D5BF5'} 50%, 
+                                       #4F46E5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: ${(props) => props.theme.textPrimary}; /* Fallback for non-gradient browsers */
+    margin: 0;
+    line-height: 1.2;
+    overflow-wrap: break-word; /* Better word handling */
+    
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+    }
 
-  @media (max-width: 768px) {
-    font-size: 2.5rem;
+    @media (max-width: 480px) {
+      font-size: 2rem;
+    }
   }
-
-  @media (max-width: 480px) {
-    font-size: 2rem;
-  }
-}
-
 
   p {
     font-size: 1.25rem;
     color: ${(props) => props.theme.textSecondary};
     line-height: 1.4;
-
+    max-width: 700px; /* Improves readability for longer taglines */
+    
     @media (max-width: 768px) {
       font-size: 1rem;
     }

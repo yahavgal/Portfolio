@@ -1,49 +1,33 @@
 import { useState } from 'react';
-import { FaGithub, FaFigma, FaArrowLeft, FaSlideshare, FaAnchor, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
+import {
+  FaArrowLeft,
+  FaGithub,
+  FaSlideshare,
+  FaFigma,
+  FaExclamationTriangle, // Problem Icon
+  FaLightbulb,          // Solution Icon
+  FaTools,              // Challenges Icon
+  FaTrophy,             // Results Icon
+  FaTimes
+} from 'react-icons/fa';
+import { MdDescription, MdErrorOutline, MdBuild, MdEmojiEvents } from 'react-icons/md';
+
+// Icon for toggling the sidebar on mobile
+import { BsLayoutSidebarInset } from 'react-icons/bs';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import styled from 'styled-components';
 
-const TabContainer = styled.div`
-  display: flex;
-  border-bottom: 2px solid ${(props) => props.theme.accent};
-  margin-bottom: 15px;
-`;
-
-const TabButton = styled.button`
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background: ${(props) => (props.active ? props.theme.accent : 'transparent')};
-  color: ${(props) => (props.active ? '#fff' : props.theme.textPrimary)};
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: ${(props) => props.theme.accent};
-    color: #fff;
-  }
-`;
-
-const TabContent = styled.div`
-  padding: 15px;
-`;
-
-/* 
-  ExpandedContent:
-  - Main content area for expanded project view.
-  - Adjusts padding dynamically.
-*/
+/* --------------------- STYLED COMPONENTS --------------------- */
 
 const ExpandedProjectContainer = styled.div`
   background-color: ${(props) => props.theme.componentBackground};
-  border: 2px solid ${(props) => props.theme.headerPrimary};
   border-radius: 10px;
-  width: 80%; /* Prevent it from stretching too wide */
-  max-width: 900px; /* Limit maximum width */
-  height: auto;
-  margin: auto; /* Centers it properly */
+  width: 80%;
+  max-width: 900px;
+  min-height: 500px;
+  margin: auto;
   display: flex;
   flex-direction: column;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
@@ -55,442 +39,563 @@ const ExpandedProjectContainer = styled.div`
 
 const ExpandedHeader = styled.div`
   width: 100%;
-  background-color:  ${(props) => props.theme.headerPrimary};
-  padding: 10px 20px;
+  background: rgba(${(props) => props.theme.headerPrimaryRGB}, 0.85); /* Semi-transparent for smooth UI */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 14px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: ${(props) => props.theme.componentBackground};
+  color: ${(props) => props.theme.textPrimary};
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  position: relative;
 `;
 
-const BackButton = styled.button`
-  background: none;
-  border: none;
+/* Centered Project Title */
+const ProjectTitle = styled.h2`
+  font-size: 1.6rem;
   color: ${(props) => props.theme.accent};
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
+`;
+
+/* Back Button */
+const BackButton = styled.button`
+  background: linear-gradient(145deg, ${(props) => props.theme.accent} 20%, ${(props) => props.theme.accentDark} 80%);
+  border: none;
+  color: ${(props) => props.theme.componentBackground};
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 1rem;
   font-weight: bold;
-
-  &:hover {
-    opacity: 0.7;
-  }
-
-  svg {
-    margin-right: 5px;
-  }
-`;
-
-const ExpandedContent = styled.div`
-  padding: 25px 30px;
-  height: auto;
-
-  @media (max-width: 768px) {
-    padding: 15px;
-  }
-`;
-
-const ProjectLinks = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const DescriptionText = styled.p`
-  color: ${(props) => props.theme.textPrimary};
-  font-size: 1rem;
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.85rem;
-  }
-`;
-
-const ProblemSection = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SectionLabel = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 2px solid ${(props) => props.theme.accent};
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
-  }
-`;
-
-const SectionDescription = styled.p`
-  color: ${(props) => props.theme.textSecondary};
-  text-align: left;
-  font-size: 1rem;
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.85rem;
-  }
-`;
-
-const SectionIcon = styled.div`
-  font-size: 1.5rem;
-  display: flex;
-  color: ${(props) => props.theme.accent};
-
-  @media (max-width: 768px) {
-    font-size: 1.3rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 1.1rem;
-  }
-`;
-
-const SectionContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  background-color: ${(props) => props.theme.background};
-  border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.accent};
-  padding: 15px;
-  margin-top: 20px;
-`;
-
-const FeaturesLabel = styled.p`
-  font-weight: bold;
-  color: ${(props) => props.theme.accent};
-  font-size: 1.125rem;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.95rem;
-  }
-`;
-
-const FeaturesList = styled.ul`
-  color: ${(props) => props.theme.textPrimary};
-  list-style-type: disc;
-  padding-left: 20px;
-`;
-
-const FeatureItem = styled.li`
-  margin-bottom: 10px;
-  font-size: 1rem;
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.85rem;
-  }
-`;
-
-const CircleLinkButton = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  color: ${(props) => props.theme.accent};
-  text-decoration: none;
-  border: 1px solid ${(props) => props.theme.accent};
-  border-radius: 8px;
-  transition: transform 0.3s;
-  margin-left: 10px;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  min-width: 44px;
+  height: 44px;
 
   svg {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
 
-    @media (max-width: 768px) {
-      font-size: 1.3rem;
-    }
+  &:hover {
+    background: ${(props) => props.theme.accentDark};
+    transform: scale(1.05);
+  }
 
-    @media (max-width: 480px) {
+  @media (max-width: 600px) {
+    min-width: 38px;
+    height: 38px;
+    padding: 6px;
+
+    svg {
       font-size: 1.1rem;
     }
   }
 `;
 
-const ChallengesContainer = styled.div`
+/* Links Container */
+const ProjectLinks = styled.div`
   display: flex;
-  flex-wrap: wrap; /* Ensures proper wrapping */
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 120px;
+
+  @media (max-width: 600px) {
+    gap: 8px;
+    min-width: auto;
+  }
+`;
+
+/* Circular Link Button */
+const CircleLinkButton = styled.a`
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 20px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 15px;
-  }
-`;
-
-const ChallengeCard = styled.div`
-
-  background-color: ${(props) => props.theme.background};
-  border-radius: 5px;
-  overflow: hidden;
-`;
-
-const ChallengeHeader = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: ${(props) => props.theme.headerPrimary};
-  padding: 10px;
-
+  width: 42px;
+  height: 42px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: ${(props) => props.theme.accent};
+  text-decoration: none;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    transform: scale(1.15);
+    background: ${(props) => props.theme.accent};
+    color: ${(props) => props.theme.background};
+  }
+
+  svg {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    width: 34px;
+    height: 34px;
+
+    svg {
+      font-size: 1.2rem;
+    }
+  }
 `;
 
-const ChallengeIcon = styled.div`
-  font-size: 1.25rem;
-  margin-right: 10px;
+
+
+const TabAndContentWrapper = styled.div`
+  position: relative;
+  flex: 1;
+  display: flex;
+  overflow: hidden; /* Prevents squishing */
+`;
+
+const SidebarToggleIcon = styled.button`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.2);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: ${(props) => props.theme.accent};
+  border: 1px solid ${(props) => props.theme.accent};
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+    background: rgba(${(props) => props.theme.accentRGB}, 0.2); /* Subtle hover effect */
+  }
+
+  svg {
+    font-size: 1.3rem;
+  }
+
+  /* Only show on mobile */
+  display: none;
+
+  @media (max-width: 768px) {
+    display: ${(props) => (props.isSidebarOpen ? "none" : "block")};
+  }
+`;
+
+
+const TabContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.3);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  height: 100%;
+  width: 5rem; /* Default collapsed width */
+  position: absolute;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    width: ${(props) => (props.isSidebarOpen ? "55%" : "3.5rem")}; /* Smaller on mobile */
+    background: ${(props) => props.theme.background};
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    max-width: 200px;
+    visibility: ${(props) => (props.isSidebarOpen ? "visible" : "hidden")};
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const TabButton = styled.button`
   display: flex;
   align-items: center;
+  justify-content: ${(props) => (props.isSidebarOpen ? "flex-start" : "center")};
+  width: 100%;
+  height: 3.5rem;
+  border: none;
+  background: transparent;
+  color: ${(props) => (props.active ? props.theme.accent : props.theme.textPrimary)};
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: ${(props) => (props.isSidebarOpen ? "0 16px" : "0")};
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease-in-out;
 
+  &:hover {
+    background: rgba(${(props) => props.theme.accentRGB}, 0.15);
+    color: ${(props) => props.theme.accent};
+    transform: scale(1.1);
+  }
+
+  /* RESPONSIVE STYLING */
   @media (max-width: 768px) {
+    height: 3rem;
+    font-size: 1.3rem;
+
+    svg {
+      font-size: 1.4rem;
+      min-width: 22px; /* Prevents icon from shrinking too much */
+      min-height: 22px;
+    }
+
+    span {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    height: 2.8rem;
+    font-size: 1.2rem;
+
+    svg {
+      font-size: 1.3rem;
+      min-width: 20px;
+      min-height: 20px;
+    }
+
+    span {
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (max-width: 410px) {
+    height: 2.6rem;
     font-size: 1.1rem;
+
+    svg {
+      font-size: 1.2rem;
+      min-width: 18px;
+      min-height: 18px; /* Ensures icons remain visible */
+    }
+
+    span {
+      font-size: 0.8rem;
+    }
   }
 
-  @media (max-width: 480px) {
+  /* Show text only when sidebar is open */
+  span {
+    display: ${(props) => (props.isSidebarOpen ? "inline" : "none")};
+    margin-left: 12px;
     font-size: 1rem;
+    white-space: nowrap; /* Prevents text from wrapping */
   }
 `;
 
-const ChallengeTitle = styled.h3`
-  margin: 0;
-  font-size: 1.1rem;
 
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
 
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
-  }
-`;
-
-const ChallengeContent = styled.div`
-  background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.textSecondary};
-  padding: 15px;
-  font-size: 0.9rem;
-
-  @media (max-width: 768px) {
-    font-size: 0.85rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-  }
-`;
-
-const ResultsContainer = styled.div`
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-`;
-
-const ResultCard = styled.div`
-  flex: 1 1 150px;
-  background-color: ${(props) => props.theme.headerPrimary};
-  border: 1px solid ${(props) => props.theme.accent};
-  border-radius: 5px;
+const ExpandedContent = styled.div`
+  flex-grow: 1;
   padding: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+    max-height: calc(100vh - 70px);
+    transform: ${(props) => (props.isSidebarOpen ? "translateX(12rem)" : "translateX(0)")};
+  }
+`;
+
+/* Reusable Sections + Headline */
+const Section = styled.div`
+  border-radius: 8px;
+  padding: 15px;
+`;
+
+const SectionHeadline = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: ${(props) => props.theme.textPrimary};
+`;
+
+const HeadlineIcon = styled.span`
+  font-size: 1.2rem;
+`;
+
+const HeadlineText = styled.h3`
+  font-size: 1.1rem;
+  margin: 0;
+`;
+
+const SectionContent = styled.p`
+  color: ${(props) => props.theme.textSecondary};
+  font-size: 1rem;
+  margin-bottom: 15px;
   text-align: center;
 `;
 
-const ResultIcon = styled.div`
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: ${(props) => props.theme.accent};
+const ScreenshotsContainer = styled(Section)`
+  text-align: center;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 1.8rem;
-  }
+const ScreenshotImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
+  &:hover {
+    transform: scale(1.05);
   }
 `;
 
-const ResultTitle = styled.h3`
-  font-size: 1.1rem;
-  color: ${(props) => props.theme.accent};
-  margin-bottom: 5px;
+const FeaturesList = styled.ul`
+  list-style-type: disc;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  max-width: 500px;
+  color: ${(props) => props.theme.textPrimary};
+  text-align: left;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 1rem;
+const FeatureItem = styled.li`
+  margin-bottom: 8px;
+  line-height: 1.4;
+`;
+
+const OverlayContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ExpandedImage = styled.img`
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+`;
+
+const CloseButton = styled.button`
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: ${(props) => props.theme.textPrimary};
+  font-size: 1.5rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
   }
 
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
+  @media (max-width: 768px) {
+    display: block;
   }
 `;
 
-const ResultContent = styled.p`
-  font-size: 0.9rem;
-  color: ${(props) => props.theme.textSecondary};
+/* Helper Component for Title + Icon */
+function SectionHeader({ icon, title }) {
+  return (
+    <SectionHeadline>
+      <HeadlineIcon>{icon}</HeadlineIcon>
+      <HeadlineText>{title}</HeadlineText>
+    </SectionHeadline>
+  );
+}
 
-  @media (max-width: 768px) {
-    font-size: 0.85rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-  }
-`;
-
+/* --------------------- MAIN COMPONENT --------------------- */
 const ExpandedProject = ({ project, onClose }) => {
-    const [activeTab, setActiveTab] = useState('description');
-    const selectedProjectData = project.data;
-  
-    return (
-      <ExpandedProjectContainer>
-        <ExpandedHeader>
-          <BackButton onClick={onClose}>
-            <FaArrowLeft /> {project.name}
-          </BackButton>
-          <ProjectLinks>
-              {selectedProjectData?.figmaLink && (
-                <CircleLinkButton
-                  href={selectedProjectData.figmaLink}
-                  platform="figma"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaFigma />
-                </CircleLinkButton>
-              )}
-              {selectedProjectData?.githubLink && (
-                <CircleLinkButton
-                  href={selectedProjectData.githubLink}
-                  platform="github"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaGithub />
-                </CircleLinkButton>
-              )}
-              {selectedProjectData?.canvaLink && (
-                <CircleLinkButton
-                  href={selectedProjectData.canvaLink}
-                  platform="canva"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaSlideshare />
-                </CircleLinkButton>
-              )}
-            </ProjectLinks>
-        </ExpandedHeader>
-  
-        {/* Tabs Navigation */}
-        <TabContainer>
-          <TabButton active={activeTab === 'description'} onClick={() => setActiveTab('description')}>
-            Description
-          </TabButton>
-          <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')}>
-            Problem & Solution
-          </TabButton>
-          <TabButton active={activeTab === 'screenshots'} onClick={() => setActiveTab('screenshots')}>
-            Screenshots
-          </TabButton>
-          <TabButton active={activeTab === 'challenges'} onClick={() => setActiveTab('challenges')}>
-            Challenges
-          </TabButton>
-          <TabButton active={activeTab === 'results'} onClick={() => setActiveTab('results')}>
-            Results
-          </TabButton>
-        </TabContainer>
-  
-        {/* Dynamic Content Based on Selected Tab */}
-        <TabContent>
-          {activeTab === 'description' && (
-            <>
-              <FeaturesLabel>Description</FeaturesLabel>
-              <DescriptionText>{project.description}</DescriptionText>
-            </>
-          )}
-          {activeTab === 'problem' && (
-            <SectionContainer>
-              <ProblemSection>
-                <SectionLabel>
-                  <SectionIcon><FaQuestionCircle /></SectionIcon>
-                  <FeaturesLabel>Problem</FeaturesLabel>
-                </SectionLabel>
-                <SectionDescription>{project.problem}</SectionDescription>
-              </ProblemSection>
-              <ProblemSection>
-                <SectionLabel>
-                  <SectionIcon><FaLightbulb /></SectionIcon>
-                  <FeaturesLabel>Solution</FeaturesLabel>
-                </SectionLabel>
-                <SectionDescription>{project.solution}</SectionDescription>
-              </ProblemSection>
-            </SectionContainer>
-          )}
-          {activeTab === 'screenshots' && (
-            <Swiper
-              modules={[Pagination, Navigation]}
-              pagination={{ clickable: true }}
-              navigation
-              spaceBetween={20}
-            >
-              {project.screenshots?.map((image, index) => (
-                <SwiperSlide key={index}>
-                  <img src={image} alt={`Screenshot ${index + 1}`} style={{ width: '100%', borderRadius: '10px' }} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
-          {activeTab === 'challenges' && (
-            <ChallengesContainer>
-              {project.challenges.map((challenge, index) => (
-                <ChallengeCard key={index}>
-                  <ChallengeHeader>
-                    <ChallengeIcon>{challenge.icon}</ChallengeIcon>
-                    <ChallengeTitle>{challenge.title}</ChallengeTitle>
-                  </ChallengeHeader>
-                  <ChallengeContent>{challenge.content}</ChallengeContent>
-                </ChallengeCard>
-              ))}
-            </ChallengesContainer>
-          )}
-          {activeTab === 'results' && (
-            <ResultsContainer>
-              {project.results.map((result, index) => (
-                <ResultCard key={index}>
-                  <ResultIcon>{result.icon}</ResultIcon>
-                  <ResultTitle>{result.title}</ResultTitle>
-                  <ResultContent>{result.content}</ResultContent>
-                </ResultCard>
-              ))}
-            </ResultsContainer>
-          )}
-        </TabContent>
-      </ExpandedProjectContainer>
-    );
-  };
+  const [activeTab, setActiveTab] = useState('description');
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  export default ExpandedProject;
+  // For mobile sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  return (
+    <ExpandedProjectContainer>
+      <ExpandedHeader>
+        <BackButton onClick={onClose}>
+          <FaArrowLeft />
+        </BackButton>
+        <ProjectTitle>{project.name}</ProjectTitle>
+        <ProjectLinks>
+          {project.githubLink && (
+            <CircleLinkButton href={project.githubLink} target="_blank" rel="noopener noreferrer">
+              <FaGithub />
+            </CircleLinkButton>
+          )}
+          {project.canvaLink && (
+            <CircleLinkButton href={project.canvaLink} target="_blank" rel="noopener noreferrer">
+              <FaSlideshare />
+            </CircleLinkButton>
+          )}
+          {project.figmaLink && (
+            <CircleLinkButton href={project.figmaLink} target="_blank" rel="noopener noreferrer">
+              <FaFigma />
+            </CircleLinkButton>
+          )}
+        </ProjectLinks>
+      </ExpandedHeader>
+
+      {/* TABS + CONTENT WRAPPER */}
+      <TabAndContentWrapper>
+        {/* Render only when sidebar is closed */}
+        {!isSidebarOpen && (
+          <SidebarToggleIcon onClick={() => setIsSidebarOpen(true)}>
+            <BsLayoutSidebarInset />
+          </SidebarToggleIcon>
+        )}
+      {/* Sidebar inside the content wrapper (below header) */}
+      <TabContainer isSidebarOpen={isSidebarOpen}>
+        <CloseButton onClick={() => setIsSidebarOpen(false)}>
+          <FaTimes />
+        </CloseButton>
+        <TabButton
+          active={activeTab === "description"}
+          onClick={() => {
+            setActiveTab("description");
+            setIsSidebarOpen(false);
+          }}
+          isSidebarOpen={isSidebarOpen}
+        >
+          <MdDescription size={24} />
+          <span>Description</span>
+        </TabButton>
+
+        <TabButton
+          active={activeTab === "problem"}
+          onClick={() => {
+            setActiveTab("problem");
+            setIsSidebarOpen(false);
+          }}
+          isSidebarOpen={isSidebarOpen}
+        >
+          <MdErrorOutline size={24} />
+          <span>Problem & Solution</span>
+        </TabButton>
+
+        <TabButton
+          active={activeTab === "challenges"}
+          onClick={() => {
+            setActiveTab("challenges");
+            setIsSidebarOpen(false);
+          }}
+          isSidebarOpen={isSidebarOpen}
+        >
+          <MdBuild size={24} />
+          <span>Challenges</span>
+        </TabButton>
+
+        <TabButton
+          active={activeTab === "results"}
+          onClick={() => {
+            setActiveTab("results");
+            setIsSidebarOpen(false);
+          }}
+          isSidebarOpen={isSidebarOpen}
+        >
+          <MdEmojiEvents size={24} />
+          <span>Results</span>
+        </TabButton>
+      </TabContainer>
+        {/* MAIN CONTENT AREA */}
+        <ExpandedContent isSidebarOpen={isSidebarOpen}>
+          {activeTab === 'description' && (
+            <ScreenshotsContainer>
+              <SectionHeader icon={<FaExclamationTriangle />} title="Description" />
+              <SectionContent>{project.description}</SectionContent>
+              <Swiper modules={[Navigation]} spaceBetween={10} slidesPerView={2}>
+                {project.screenshots.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <ScreenshotImage src={image} onClick={() => setSelectedImage(image)} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </ScreenshotsContainer>
+          )}
+
+          {activeTab === 'problem' && (
+            <Section>
+              <SectionHeader icon={<FaExclamationTriangle />} title="Problem" />
+              <SectionContent>{project.problem}</SectionContent>
+
+              <SectionHeader icon={<FaLightbulb />} title="Solution" />
+              <SectionContent>{project.solution}</SectionContent>
+            </Section>
+          )}
+
+          {activeTab === 'challenges' && (
+            <Section>
+              <SectionHeader icon={<FaTools />} title="Challenges" />
+              {project.challenges.map((challenge, index) => (
+                <div key={index}>
+                  <SectionHeader icon={challenge.icon} title={challenge.title} />
+                  <SectionContent>{challenge.content}</SectionContent>
+                </div>
+              ))}
+
+              {project.keyFeatures && (
+                <>
+                  <SectionHeader icon={<FaLightbulb />} title="Key Features" />
+                  <FeaturesList>
+                    {project.keyFeatures.map((feature, idx) => (
+                      <FeatureItem key={idx}>{feature}</FeatureItem>
+                    ))}
+                  </FeaturesList>
+                </>
+              )}
+            </Section>
+          )}
+
+          {activeTab === 'results' && (
+            <Section>
+              <SectionHeader icon={<FaTrophy />} title="Results" />
+              {project.results.map((result, index) => (
+                <div key={index}>
+                  <SectionHeader icon={result.icon} title={result.title} />
+                  <SectionContent>{result.content}</SectionContent>
+                </div>
+              ))}
+            </Section>
+          )}
+        </ExpandedContent>
+      </TabAndContentWrapper>
+
+      {/* FULLSCREEN IMAGE OVERLAY */}
+      {selectedImage && (
+        <OverlayContainer onClick={() => setSelectedImage(null)}>
+          <CloseButton>
+            <FaTimes />
+          </CloseButton>
+          <ExpandedImage src={selectedImage} />
+        </OverlayContainer>
+      )}
+    </ExpandedProjectContainer>
+  );
+};
+
+export default ExpandedProject;

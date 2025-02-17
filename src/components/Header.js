@@ -14,7 +14,8 @@ const HeaderContainer = styled.header`
   justify-content: center;
   align-items: center;
   height: 80px;
-  padding: 0 20px;
+  padding: 20px;
+  padding-bottom: 0;
 
   @media (max-width: 768px) {
     height: 60px;
