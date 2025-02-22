@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaNodeJs, FaFigma, FaJava, FaDatabase, FaGit } from 'react-icons/fa';
 import HeadlineContainer from '../components/HeadlineContainer';
-import Section from '../components/SectionContainer'; // Import custom components
+import PageLayout from '../components/PageLayout'; // Import custom components
 
 
 // Styled Components for About Section
@@ -69,7 +69,7 @@ const Footer = styled.footer`
 
 const About = () => {
   return (
-    <Section>
+    <PageLayout>
       <ContentContainer>
         <HeadlineContainer
           title="Hi, I'm Yahav Gal."
@@ -118,7 +118,7 @@ const About = () => {
         </SkillsSection>
       </ContentContainer>
       <Footer>Footer placeholder content</Footer>
-    </Section>
+    </PageLayout>
   );
 };
 

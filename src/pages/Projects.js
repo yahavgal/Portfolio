@@ -1,44 +1,36 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { FaGithub, FaFigma, FaArrowLeft, FaSlideshare, FaAnchor, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { FaArrowRight, FaFigma, FaGithub, FaSlideshare, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css';
 import HeadlineContainer from '../components/HeadlineContainer';
-import Section from '../components/SectionContainer'; // Import custom components
 import ExpandedProject from '../components/ExpandedProject'; // Import custom components
+import PageLayout from '../components/PageLayout';
 
 
 // Styled Components for Projects Section
 const SwiperContainer = styled.div`
+  position: relative; /* ✅ Keeps absolute children (SwipeIndicator) within */
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100%;
   gap: 20px;
   padding: 20px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   @media (max-width: 480px) {
     flex-direction: column;
     gap: 20px;
   }
 `;
-
 const ProjectCard = styled.div`
   flex: 1 1 300px;
   max-width: 350px;
+  max-height: 90vh;
   background-color: ${(props) => props.theme.componentBackground};
   border: 1px solid ${(props) => props.theme.headerPrimary};
-  border-bottom: none;
   border-radius: 10px;
   overflow: hidden;
   display: flex;
@@ -49,11 +41,17 @@ const ProjectCard = styled.div`
 
   &:hover {
     border: 1px solid ${(props) => props.theme.accent};
-    border-bottom: none;
-    box-shadow: 0px 0px 25px 10px rgba(${(props) => props.theme.accent}, 0.75);
+    box-shadow: 0px 0px 15px 4px rgba(${(props) => props.theme.accent}, 0.5);
+  }
+
+  @media (max-width: 730px) {
+    max-height: 85vh;
+  }
+
+  @media (max-width: 460px) {
+    max-width: 100%;
   }
 `;
-
 
 const ProjectHeader = styled.div`
   display: flex;
@@ -133,6 +131,38 @@ const LinkButton = styled.a`
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
   }
 `;
+const fadeInOut = keyframes`
+  0% { opacity: 0; transform: translateY(10px); }
+  20% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+`;
+
+const SwipeIndicator = styled.div`
+  position: absolute;
+  bottom: 5%; /* 🔥 Always within the visible screen */
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: ${(props) => props.theme.textPrimary};
+  font-size: 1rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 14px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  z-index: 99;
+  animation: ${({ isVisible }) => (isVisible ? fadeInOut : "none")} 3s ease-in-out;
+  opacity: ${({ isVisible }) => (isVisible ? "1" : "0")};
+
+  @media (max-height: 700px) {
+    bottom: 3%; /* Move up if height is too small */
+  }
+`;
+
+
 
 const projectData = [
   {
@@ -253,65 +283,79 @@ const projectData = [
   },
 ];
 
-
-
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [showSwipeIndicator, setShowSwipeIndicator] = useState(false);
+
+  useEffect(() => {
+    setShowSwipeIndicator(true);
+    const fadeTimer = setTimeout(() => {
+      setShowSwipeIndicator(false);
+    }, 3000);
+
+    return () => clearTimeout(fadeTimer);
+  }, []);
+
 
   return (
-    <Section>
-      <HeadlineContainer title="Bringing Ideas to Life" tagline="Explore the work I’ve built to solve problems, enhance experiences, and push boundaries." />
-
+    <PageLayout>
+      <HeadlineContainer
+        title="Bringing Ideas to Life"
+        tagline="Explore the work I’ve built to solve problems, enhance experiences, and push boundaries."
+      />
+      
       {!selectedProject ? (
-        <SwiperContainer>
-        <Swiper
-          modules={[Pagination, Navigation]}
-          
-          navigation
-          spaceBetween={10}
-          slidesPerView={1}
-          style={{ width: '100%', overflow: 'hidden' }}
-        >
-            {projectData.map((project) => (
-              <SwiperSlide key={project.name} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <ProjectCard onClick={() => setSelectedProject(project)}>
-                  <ProjectHeader>
-                    <ProjectTitle>{project.name}</ProjectTitle>
-                  </ProjectHeader>
-                  <ProjectImage src={project.image} alt={`${project.name} Preview`} />
-                  <TechStack>
-                    {project.techStack.map((tech) => (
-                      <span key={tech}>{tech}</span>
-                    ))}
-                  </TechStack>
-                  <ProjectDescription>{project.shortDescription}</ProjectDescription>
-                  <LinksContainer>
-                    {project.figmaLink && (
-                      <LinkButton href={project.figmaLink} target="_blank">
-                        <FaFigma /> Figma
-                      </LinkButton>
-                    )}
-                    {project.githubLink && (
-                      <LinkButton href={project.githubLink} target="_blank">
-                        <FaGithub /> GitHub
-                      </LinkButton>
-                    )}
-                    {project.canvaLink && (
-                      <LinkButton href={project.canvaLink} target="_blank">
-                        <FaSlideshare /> Canva
-                      </LinkButton>
-                    )}
-                  </LinksContainer>
-                </ProjectCard>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </SwiperContainer>
+        <>
+          <SwiperContainer>
+            <Swiper modules={[Pagination, Navigation]} spaceBetween={10} slidesPerView={1} style={{ width: "100%", overflow: "hidden" }}>
+              {projectData.map((project) => (
+                <SwiperSlide key={project.name} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  <ProjectCard onClick={() => setSelectedProject(project)}>
+                    <ProjectHeader>
+                      <ProjectTitle>{project.name}</ProjectTitle>
+                    </ProjectHeader>
+                    <ProjectImage src={project.image} alt={`${project.name} Preview`} />
+                    <TechStack>
+                      {project.techStack.map((tech) => (
+                        <span key={tech}>{tech}</span>
+                      ))}
+                    </TechStack>
+                    <ProjectDescription>{project.shortDescription}</ProjectDescription>
+                    <LinksContainer>
+                      {project.figmaLink && (
+                        <LinkButton href={project.figmaLink} target="_blank">
+                          <FaFigma /> Figma
+                        </LinkButton>
+                      )}
+                      {project.githubLink && (
+                        <LinkButton href={project.githubLink} target="_blank">
+                          <FaGithub /> GitHub
+                        </LinkButton>
+                      )}
+                      {project.canvaLink && (
+                        <LinkButton href={project.canvaLink} target="_blank">
+                          <FaSlideshare /> Canva
+                        </LinkButton>
+                      )}
+                    </LinksContainer>
+                  </ProjectCard>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </SwiperContainer>
+  
+          {/* ✅ Now the Swipe Indicator is part of the same branch */}
+          {showSwipeIndicator && (
+            <SwipeIndicator isVisible={showSwipeIndicator}>
+              <span>Swipe</span>
+              <FaArrowRight />
+            </SwipeIndicator>
+          )}
+        </>
       ) : (
         <ExpandedProject project={selectedProject} onClose={() => setSelectedProject(null)} />
       )}
-    </Section>
+    </PageLayout>
   );
-};
-
+}  
 export default Projects;

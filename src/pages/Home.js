@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaPhone, FaSuitcase } from 'react-icons/fa'; 
 import { useNavigate } from 'react-router-dom';
 import HeadlineContainer from '../components/HeadlineContainer';
-import Section from '../components/SectionContainer';
+import PageLayout from '../components/PageLayout';
 
 /* 
   CTAContainer:
@@ -107,7 +107,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <Section>
+    <PageLayout>
       <HeadlineContainer
         title="Code Meets Intuition"
         tagline="Full-Stack Developer & Product Designer"
@@ -120,7 +120,7 @@ const Home = () => {
           <FaSuitcase /> View my Work
         </OutlineButton>
       </CTAContainer>
-    </Section>
+    </PageLayout>
   );
 };
 

@@ -19,12 +19,12 @@ const HeaderContainer = styled.header`
 
   @media (max-width: 768px) {
     height: 60px;
-    padding: 0 15px;
+    padding: 15px;
   }
 
   @media (max-width: 480px) {
     height: 50px;
-    padding: 0 10px;
+    padding: 10px;
   }
 `;
 

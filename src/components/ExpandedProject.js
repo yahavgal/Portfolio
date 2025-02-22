@@ -20,22 +20,26 @@ import { Navigation } from 'swiper/modules';
 import styled from 'styled-components';
 
 /* --------------------- STYLED COMPONENTS --------------------- */
-
 const ExpandedProjectContainer = styled.div`
+  position: absolute; /* Makes it overlay other content */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Fully covers screen */
   background-color: ${(props) => props.theme.componentBackground};
-  border-radius: 10px;
-  width: 80%;
-  max-width: 900px;
-  min-height: 500px;
-  margin: auto;
   display: flex;
   flex-direction: column;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-
-  @media (max-width: 768px) {
-    width: 95%;
-  }
+  z-index: 1000; /* Ensures it's on top */
 `;
+
+const ExpandedContent = styled.div`
+  flex-grow: 1;
+  overflow-y: auto; /* Only scrolls content inside */
+  padding: 20px;
+`;
+
+
 
 const ExpandedHeader = styled.div`
   width: 100%;
@@ -300,19 +304,7 @@ const TabButton = styled.button`
 
 
 
-const ExpandedContent = styled.div`
-  flex-grow: 1;
-  padding: 20px;
-  max-height: 500px;
-  overflow-y: auto;
-  transition: transform 0.3s ease-in-out;
 
-  @media (max-width: 768px) {
-    padding: 15px;
-    max-height: calc(100vh - 70px);
-    transform: ${(props) => (props.isSidebarOpen ? "translateX(12rem)" : "translateX(0)")};
-  }
-`;
 
 /* Reusable Sections + Headline */
 const Section = styled.div`
@@ -346,8 +338,20 @@ const SectionContent = styled.p`
   text-align: center;
 `;
 
-const ScreenshotsContainer = styled(Section)`
-  text-align: center;
+const ScreenshotsContainer = styled.div`
+  margin-top: 20px; /* Ensures space between description and screenshots */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SwiperWrapper = styled.div`
+  background: ${(props) => props.theme.background}; /* Background color from theme */
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 100%;
+  max-width: 700px; /* Adjust as needed */
 `;
 
 const ScreenshotImage = styled.img`
@@ -525,19 +529,24 @@ const ExpandedProject = ({ project, onClose }) => {
         {/* MAIN CONTENT AREA */}
         <ExpandedContent isSidebarOpen={isSidebarOpen}>
           {activeTab === 'description' && (
-            <ScreenshotsContainer>
+            <Section>
               <SectionHeader icon={<FaExclamationTriangle />} title="Description" />
               <SectionContent>{project.description}</SectionContent>
-              <Swiper modules={[Navigation]} spaceBetween={10} slidesPerView={2}>
-                {project.screenshots.map((image, index) => (
-                  <SwiperSlide key={index}>
-                    <ScreenshotImage src={image} onClick={() => setSelectedImage(image)} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </ScreenshotsContainer>
-          )}
 
+              {/* SWIPER WITH BACKGROUND BELOW DESCRIPTION */}
+              <ScreenshotsContainer>
+                <SwiperWrapper>
+                  <Swiper modules={[Navigation]} spaceBetween={10} slidesPerView={2}>
+                    {project.screenshots.map((image, index) => (
+                      <SwiperSlide key={index}>
+                        <ScreenshotImage src={image} onClick={() => setSelectedImage(image)} />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </SwiperWrapper>
+              </ScreenshotsContainer>
+            </Section>
+          )}
           {activeTab === 'problem' && (
             <Section>
               <SectionHeader icon={<FaExclamationTriangle />} title="Problem" />
