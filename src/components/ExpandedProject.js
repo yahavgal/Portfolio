@@ -8,7 +8,8 @@ import {
   FaLightbulb,          // Solution Icon
   FaTools,              // Challenges Icon
   FaTrophy,             // Results Icon
-  FaTimes
+  FaCameraRetro,        // Screenshot Icon
+  FaCheckCircle,        // Key Features Icon
 } from 'react-icons/fa';
 import { MdDescription, MdErrorOutline, MdBuild, MdEmojiEvents } from 'react-icons/md';
 
@@ -21,39 +22,111 @@ import styled from 'styled-components';
 
 /* --------------------- STYLED COMPONENTS --------------------- */
 const ExpandedProjectContainer = styled.div`
-  position: absolute; /* Makes it overlay other content */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh; /* Fully covers screen */
-  background-color: ${(props) => props.theme.componentBackground};
+  height: 100vh;
+  background: ${(props) =>
+    props.background ? `url(${props.background}) center/cover no-repeat` : props.theme.componentBackground};
   display: flex;
   flex-direction: column;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  z-index: 1000; /* Ensures it's on top */
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(${(props) => (props.isSidebarOpen ? "200px" : "0")});
 `;
 
 const ExpandedContent = styled.div`
   flex-grow: 1;
-  overflow-y: auto; /* Only scrolls content inside */
+  overflow-y: auto;
   padding: 20px;
+  width: 100%;
+  background: rgba(${(props) => props.theme.componentBackgroundRGB}, 0.20);
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(${(props) => (props.isSidebarOpen ? "200px" : "0")});
 `;
-
-
 
 const ExpandedHeader = styled.div`
   width: 100%;
-  background: rgba(${(props) => props.theme.headerPrimaryRGB}, 0.85); /* Semi-transparent for smooth UI */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: ${(props) => props.theme.componentBackground}; /* Solid background */
   padding: 14px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: ${(props) => props.theme.textPrimary};
-  border-radius: 12px 12px 0 0;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   position: relative;
+`;
+
+const TabAndContentWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(${(props) => (props.isSidebarOpen ? "200px" : "0")});
+`;
+
+const TabContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 200px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.85); /* Minor transparency for background */
+  backdrop-filter: blur(5px);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1800;
+  transform: translateX(${(props) => (props.isSidebarOpen ? "0" : "-200px")});
+
+  @media (max-width: 768px) {
+    width: 55%;
+    max-width: 250px;
+    transform: translateX(${(props) => (props.isSidebarOpen ? "0" : "-100%")});
+  }
+`;
+
+const SidebarToggleIcon = styled.button`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.9);
+  color: ${(props) => props.theme.textPrimary};
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1100;
+  transition: all 0.3s ease-in-out;
+  display: ${(props) => (props.isSidebarOpen ? "none" : "flex")};
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: ${(props) => props.theme.headerPrimary};
+    transform: scale(1.1);
+  }
+
+  svg {
+    font-size: 1.5rem;
+  }
+`;
+
+const DarkOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 200px; /* Starts where the sidebar ends */
+  width: calc(100% - 200px); /* Covers only the content area */
+  height: 100%;
+  background: rgba(0, 0, 0, ${(props) => (props.isSidebarOpen ? 0.4 : 0)});
+  transition: background 0.3s ease-in-out;
+  z-index: ${(props) => (props.isSidebarOpen ? 1600 : -1)};
+  pointer-events: ${(props) => (props.isSidebarOpen ? "auto" : "none")};
+
+  @media (max-width: 768px) {
+    left: ${(props) => (props.isSidebarOpen ? "55%" : "0")};
+    width: ${(props) => (props.isSidebarOpen ? "45%" : "100%")};
+  }
 `;
 
 /* Centered Project Title */
@@ -163,70 +236,6 @@ const CircleLinkButton = styled.a`
   }
 `;
 
-
-
-const TabAndContentWrapper = styled.div`
-  position: relative;
-  flex: 1;
-  display: flex;
-  overflow: hidden; /* Prevents squishing */
-`;
-
-const SidebarToggleIcon = styled.button`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(${(props) => props.theme.backgroundRGB}, 0.2);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  color: ${(props) => props.theme.accent};
-  border: 1px solid ${(props) => props.theme.accent};
-  border-radius: 8px;
-  padding: 8px;
-  cursor: pointer;
-  z-index: 20;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.1);
-    background: rgba(${(props) => props.theme.accentRGB}, 0.2); /* Subtle hover effect */
-  }
-
-  svg {
-    font-size: 1.3rem;
-  }
-
-  /* Only show on mobile */
-  display: none;
-
-  @media (max-width: 768px) {
-    display: ${(props) => (props.isSidebarOpen ? "none" : "block")};
-  }
-`;
-
-
-const TabContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: rgba(${(props) => props.theme.backgroundRGB}, 0.3);
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
-  height: 100%;
-  width: 5rem; /* Default collapsed width */
-  position: absolute;
-  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
-
-  @media (max-width: 768px) {
-    width: ${(props) => (props.isSidebarOpen ? "55%" : "3.5rem")}; /* Smaller on mobile */
-    background: ${(props) => props.theme.background};
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    max-width: 200px;
-    visibility: ${(props) => (props.isSidebarOpen ? "visible" : "hidden")};
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
-  }
-`;
-
 const TabButton = styled.button`
   display: flex;
   align-items: center;
@@ -302,33 +311,146 @@ const TabButton = styled.button`
   }
 `;
 
-
-
-
-
 /* Reusable Sections + Headline */
 const Section = styled.div`
-  border-radius: 8px;
-  padding: 15px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 30px 0;
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.1), 0 6px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s ease-in-out;
+  border: 2px solid rgba(${(props) => props.theme.accentRGB}, 0.2);
+  position: relative;
+  overflow: hidden;
+
+  /* Glowing hover effect */
+  &:hover {
+    box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.15), 0 10px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+  }
+
+  /* Animated background border effect */
+  &:before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    filter: blur(15px);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  &:hover:before {
+    opacity: 0.5;
+  }
+
+  @media (max-width: 600px) {
+    padding: 20px;
+    margin: 20px 0;
+  }
 `;
 
 const SectionHeadline = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 6px;
+  margin-bottom: 15px;
+  text-align: center;
   color: ${(props) => props.theme.textPrimary};
+  position: relative;
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    margin: 0;
+  }
+
+  /* Subtle animated underline */
+  &:after {
+    content: "";
+    width: 50px;
+    height: 2px;
+    background: ${(props) => props.theme.accent};
+    display: block;
+    margin: 5px auto 0 auto;
+    transition: width 0.3s ease-in-out;
+  }
+
+  &:hover:after {
+    width: 70px;
+  }
+
+  @media (max-width: 600px) {
+    h3 {
+      font-size: 1.2rem;
+    }
+  }
+`;
+
+
+const SectionHeadlineSecondary = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 12px;
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid ${(props) => props.theme.accent};
+  transition: border-color 0.3s ease-in-out;
+
+  span {
+    font-size: 1.1rem; /* Slightly smaller than primary */
+    font-weight: 500; /* Lighter, elegant */
+    color: ${(props) => props.theme.textPrimary};
+    letter-spacing: 0.5px;
+  }
+
+  svg {
+    font-size: 1.4rem;
+    color: ${(props) => props.theme.accent};
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+
+  &:hover {
+    border-color: ${(props) => props.theme.accentDark};
+
+    svg {
+      transform: scale(1.05);
+      color: ${(props) => props.theme.accentDark};
+    }
+  }
+
+  @media (max-width: 600px) {
+    gap: 8px;
+
+    span {
+      font-size: 1rem;
+    }
+
+    svg {
+      font-size: 1.2rem;
+    }
+  }
 `;
 
 const HeadlineIcon = styled.span`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  color: ${(props) => props.theme.accent};
 `;
 
 const HeadlineText = styled.h3`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin: 0;
+  font-weight: bold;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 `;
 
 const SectionContent = styled.p`
@@ -367,18 +489,51 @@ const ScreenshotImage = styled.img`
   }
 `;
 
-const FeaturesList = styled.ul`
-  list-style-type: disc;
-  margin: 0 auto;
-  margin-bottom: 15px;
-  max-width: 500px;
-  color: ${(props) => props.theme.textPrimary};
-  text-align: left;
+const FeaturesSection = styled.div`
+  width: 100%;
+  margin-top: 30px;
+  padding: 40px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: rgba(${(props) => props.theme.backgroundRGB}, 0.2);
+    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.07);
+  }
 `;
 
-const FeatureItem = styled.li`
-  margin-bottom: 8px;
-  line-height: 1.4;
+const FeatureItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: linear-gradient(
+    to right,
+    rgba(${(props) => props.theme.componentBackgroundRGB}, 0.7),
+    rgba(${(props) => props.theme.componentBackgroundRGB}, 0.4)
+  );
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 14px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  span {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: ${(props) => props.theme.textPrimary};
+  }
+
+  @media (max-width: 600px) {
+    padding: 18px 20px;
+  }
 `;
 
 const OverlayContainer = styled.div`
@@ -387,7 +542,6 @@ const OverlayContainer = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -401,25 +555,7 @@ const ExpandedImage = styled.img`
   border-radius: 10px;
 `;
 
-const CloseButton = styled.button`
-  display: none;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: ${(props) => props.theme.textPrimary};
-  font-size: 1.5rem;
-  cursor: pointer;
 
-  &:hover {
-    opacity: 0.7;
-  }
-
-  @media (max-width: 768px) {
-    display: block;
-  }
-`;
 
 /* Helper Component for Title + Icon */
 function SectionHeader({ icon, title }) {
@@ -440,7 +576,7 @@ const ExpandedProject = ({ project, onClose }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <ExpandedProjectContainer>
+    <ExpandedProjectContainer background={project.background}>
       <ExpandedHeader>
         <BackButton onClick={onClose}>
           <FaArrowLeft />
@@ -464,78 +600,82 @@ const ExpandedProject = ({ project, onClose }) => {
           )}
         </ProjectLinks>
       </ExpandedHeader>
-
-      {/* TABS + CONTENT WRAPPER */}
+  
+      {/* Sidebar and Content Wrapper */}
       <TabAndContentWrapper>
-        {/* Render only when sidebar is closed */}
         {!isSidebarOpen && (
           <SidebarToggleIcon onClick={() => setIsSidebarOpen(true)}>
             <BsLayoutSidebarInset />
           </SidebarToggleIcon>
         )}
-      {/* Sidebar inside the content wrapper (below header) */}
-      <TabContainer isSidebarOpen={isSidebarOpen}>
-        <CloseButton onClick={() => setIsSidebarOpen(false)}>
-          <FaTimes />
-        </CloseButton>
-        <TabButton
-          active={activeTab === "description"}
-          onClick={() => {
-            setActiveTab("description");
-            setIsSidebarOpen(false);
-          }}
-          isSidebarOpen={isSidebarOpen}
-        >
-          <MdDescription size={24} />
-          <span>Description</span>
-        </TabButton>
-
-        <TabButton
-          active={activeTab === "problem"}
-          onClick={() => {
-            setActiveTab("problem");
-            setIsSidebarOpen(false);
-          }}
-          isSidebarOpen={isSidebarOpen}
-        >
-          <MdErrorOutline size={24} />
-          <span>Problem & Solution</span>
-        </TabButton>
-
-        <TabButton
-          active={activeTab === "challenges"}
-          onClick={() => {
-            setActiveTab("challenges");
-            setIsSidebarOpen(false);
-          }}
-          isSidebarOpen={isSidebarOpen}
-        >
-          <MdBuild size={24} />
-          <span>Challenges</span>
-        </TabButton>
-
-        <TabButton
-          active={activeTab === "results"}
-          onClick={() => {
-            setActiveTab("results");
-            setIsSidebarOpen(false);
-          }}
-          isSidebarOpen={isSidebarOpen}
-        >
-          <MdEmojiEvents size={24} />
-          <span>Results</span>
-        </TabButton>
-      </TabContainer>
-        {/* MAIN CONTENT AREA */}
+  
+        {/* Sidebar */}
+        <TabContainer isSidebarOpen={isSidebarOpen}>
+          <TabButton
+            active={activeTab === "description"}
+            onClick={() => {
+              setActiveTab("description");
+              setIsSidebarOpen(false);
+            }}
+            isSidebarOpen={isSidebarOpen}
+          >
+            <MdDescription size={24} />
+            <span>Description</span>
+          </TabButton>
+  
+          <TabButton
+            active={activeTab === "problem"}
+            onClick={() => {
+              setActiveTab("problem");
+              setIsSidebarOpen(false);
+            }}
+            isSidebarOpen={isSidebarOpen}
+          >
+            <MdErrorOutline size={24} />
+            <span>Problem & Solution</span>
+          </TabButton>
+  
+          <TabButton
+            active={activeTab === "challenges"}
+            onClick={() => {
+              setActiveTab("challenges");
+              setIsSidebarOpen(false);
+            }}
+            isSidebarOpen={isSidebarOpen}
+          >
+            <MdBuild size={24} />
+            <span>Challenges</span>
+          </TabButton>
+  
+          <TabButton
+            active={activeTab === "results"}
+            onClick={() => {
+              setActiveTab("results");
+              setIsSidebarOpen(false);
+            }}
+            isSidebarOpen={isSidebarOpen}
+          >
+            <MdEmojiEvents size={24} />
+            <span>Results</span>
+          </TabButton>
+        </TabContainer>
+  
+        {/* Dark Overlay on Content Only */}
+        <DarkOverlay isSidebarOpen={isSidebarOpen} onClick={() => setIsSidebarOpen(false)} />
+  
+        {/* Main Content */}
         <ExpandedContent isSidebarOpen={isSidebarOpen}>
-          {activeTab === 'description' && (
+          {activeTab === "description" && (
             <Section>
               <SectionHeader icon={<FaExclamationTriangle />} title="Description" />
               <SectionContent>{project.description}</SectionContent>
-
-              {/* SWIPER WITH BACKGROUND BELOW DESCRIPTION */}
+  
               <ScreenshotsContainer>
                 <SwiperWrapper>
+                  <SectionHeadlineSecondary>
+                    <FaCameraRetro />
+                    <span>Screenshots</span>
+                  </SectionHeadlineSecondary>
                   <Swiper modules={[Navigation]} spaceBetween={10} slidesPerView={2}>
                     {project.screenshots.map((image, index) => (
                       <SwiperSlide key={index}>
@@ -547,45 +687,54 @@ const ExpandedProject = ({ project, onClose }) => {
               </ScreenshotsContainer>
             </Section>
           )}
-          {activeTab === 'problem' && (
+  
+          {activeTab === "problem" && (
             <Section>
               <SectionHeader icon={<FaExclamationTriangle />} title="Problem" />
               <SectionContent>{project.problem}</SectionContent>
-
+  
               <SectionHeader icon={<FaLightbulb />} title="Solution" />
               <SectionContent>{project.solution}</SectionContent>
+              {project.keyFeatures && (
+              <FeaturesSection>
+                <SectionHeadlineSecondary>
+                  <FaLightbulb />
+                  <span>Key Features</span>
+                </SectionHeadlineSecondary>
+                {project.keyFeatures.map((feature, idx) => (
+                  <FeatureItem key={idx}>
+                    <span>{feature}</span>
+                  </FeatureItem>
+                ))}
+              </FeaturesSection>
+            )}
             </Section>
           )}
-
-          {activeTab === 'challenges' && (
+  
+          {activeTab === "challenges" && (
             <Section>
               <SectionHeader icon={<FaTools />} title="Challenges" />
               {project.challenges.map((challenge, index) => (
                 <div key={index}>
-                  <SectionHeader icon={challenge.icon} title={challenge.title} />
+                  <SectionHeadlineSecondary>
+                    {challenge.icon}
+                    <span>{challenge.title}</span>
+                  </SectionHeadlineSecondary>
                   <SectionContent>{challenge.content}</SectionContent>
                 </div>
               ))}
-
-              {project.keyFeatures && (
-                <>
-                  <SectionHeader icon={<FaLightbulb />} title="Key Features" />
-                  <FeaturesList>
-                    {project.keyFeatures.map((feature, idx) => (
-                      <FeatureItem key={idx}>{feature}</FeatureItem>
-                    ))}
-                  </FeaturesList>
-                </>
-              )}
             </Section>
           )}
-
-          {activeTab === 'results' && (
+  
+          {activeTab === "results" && (
             <Section>
               <SectionHeader icon={<FaTrophy />} title="Results" />
               {project.results.map((result, index) => (
                 <div key={index}>
-                  <SectionHeader icon={result.icon} title={result.title} />
+                  <SectionHeadlineSecondary>
+                    {result.icon}
+                    <span>{result.title}</span>
+                  </SectionHeadlineSecondary>
                   <SectionContent>{result.content}</SectionContent>
                 </div>
               ))}
@@ -593,13 +742,10 @@ const ExpandedProject = ({ project, onClose }) => {
           )}
         </ExpandedContent>
       </TabAndContentWrapper>
-
-      {/* FULLSCREEN IMAGE OVERLAY */}
+  
+      {/* Fullscreen Image Overlay */}
       {selectedImage && (
         <OverlayContainer onClick={() => setSelectedImage(null)}>
-          <CloseButton>
-            <FaTimes />
-          </CloseButton>
           <ExpandedImage src={selectedImage} />
         </OverlayContainer>
       )}

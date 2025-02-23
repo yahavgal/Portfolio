@@ -25,6 +25,7 @@ const SwiperContainer = styled.div`
     gap: 20px;
   }
 `;
+
 const ProjectCard = styled.div`
   flex: 1 1 300px;
   max-width: 350px;
@@ -37,11 +38,12 @@ const ProjectCard = styled.div`
   flex-direction: column;
   position: relative;
   cursor: pointer;
-  transition: border 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease-in-out;
 
   &:hover {
     border: 1px solid ${(props) => props.theme.accent};
-    box-shadow: 0px 0px 15px 4px rgba(${(props) => props.theme.accent}, 0.5);
+    box-shadow: 0px 0px 25px rgba(${(props) => props.theme.accentRGB}, 0.3);
+    transform: translateY(-3px);
   }
 
   @media (max-width: 730px) {
@@ -78,15 +80,20 @@ const ProjectImage = styled.img`
 
 const TechStack = styled.div`
   display: flex;
-  justify-content: space-around;
-  padding: 8px;
-  background-color:  ${(props) => props.theme.headerPrimary};
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+  background-color: ${(props) => props.theme.headerPrimary};
   color: ${(props) => props.theme.textSecondary};
 
   span {
-    flex: 1;
     text-align: center;
     font-size: 1rem;
+    padding: 6px 12px;
+    background: rgba(${(props) => props.theme.componentBackgroundRGB}, 0.2);
+    border-radius: 8px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
   }
 `;
 
@@ -131,16 +138,17 @@ const LinkButton = styled.a`
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
   }
 `;
+
 const fadeInOut = keyframes`
   0% { opacity: 0; transform: translateY(10px); }
   20% { opacity: 1; transform: translateY(0); }
-  80% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-10px); }
+  90% { opacity: 0.8; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-5px); }
 `;
 
 const SwipeIndicator = styled.div`
   position: absolute;
-  bottom: 5%; /* 🔥 Always within the visible screen */
+  bottom: 4%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -154,20 +162,20 @@ const SwipeIndicator = styled.div`
   border-radius: 20px;
   backdrop-filter: blur(8px);
   z-index: 99;
-  animation: ${({ isVisible }) => (isVisible ? fadeInOut : "none")} 3s ease-in-out;
+  animation: ${({ isVisible }) => (isVisible ? fadeInOut : "none")} 4s ease-in-out;
   opacity: ${({ isVisible }) => (isVisible ? "1" : "0")};
+  transition: opacity 1s ease-out;
 
   @media (max-height: 700px) {
-    bottom: 3%; /* Move up if height is too small */
+    bottom: 3%;
   }
 `;
-
-
 
 const projectData = [
   {
     name: 'Shrine',
-    image: 'project-preview.jpg',
+    image: 'shrine_background.jpg',
+    background: '/shrine_background.jpg',
     techStack: ['Figma', 'Photoshop', 'Balsamiq'],
     shortDescription: 'A mindfulness app for daily growth.',
     description:
@@ -226,6 +234,7 @@ const projectData = [
   {
     name: 'Shrine',
     image: 'project-preview.jpg',
+    background: '/shrine_background.jpg',
     techStack: ['Figma', 'Photoshop', 'Balsamiq'],
     shortDescription: 'A mindfulness app for daily growth.',
     description:
@@ -241,11 +250,11 @@ const projectData = [
       'Cross-platform: Planned development using React Native for both iOS and Android platforms.',
     ],
     screenshots: [
-      '/chatbot_shrine.jpg',
-      '/chatbot_shrine.jpg',
-      '/chatbot_shrine.jpg',
-      '/chatbot_shrine.jpg',
-      '/chatbot_shrine.jpg',
+      '/shrine_screenshot_1.png',
+      '/shrine_screenshot_2.png',
+      '/shrine_screenshot_3.png',
+      '/shrine_screenshot_4.png',
+      '/shrine_screenshot_5.png'
     ],
     challenges: [
       {

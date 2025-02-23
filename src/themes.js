@@ -1,5 +1,3 @@
-// themes.js
-// This file contains the theme object for the light and dark themes.
 export const lightTheme = {
   background: '#EDEFF2',
   backgroundRGB: '237, 239, 242',
@@ -7,7 +5,11 @@ export const lightTheme = {
   headerPrimary: '#D1D5DB',
   textSecondary: '#6B7280',
   accent: '#4F46E5',
+  accentRGB: '79, 70, 229',
+  accentDark: '#4338CA',
+  accentDarkRGB: '67, 56, 202',
   componentBackground: '#F5F6FA',
+  componentBackgroundRGB: '245, 246, 250',
 };
 
 export const darkTheme = {
@@ -17,5 +19,9 @@ export const darkTheme = {
   headerPrimary: '#111827',
   textSecondary: '#6D7D8D',
   accent: '#8B5CF6',
+  accentRGB: '139, 92, 246',
+  accentDark: '#7C3AED',
+  accentDarkRGB: '124, 58, 237',
   componentBackground: '#25313F',
+  componentBackgroundRGB: '37, 49, 63',
 };

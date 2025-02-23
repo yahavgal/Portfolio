@@ -7,9 +7,8 @@ const PageLayoutContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  min-height: calc(100vh - 60px); /* 🔥 Prevents overflow, assumes header is ~60px */
-  padding-top: 60px; /* Matches assumed header height */
-  overflow: hidden; /* Prevents scrollbars */
+  min-height: calc(100vh - 60px); 
+  overflow: hidden;
 `;
 
 const PageLayout = ({ children }) => {
