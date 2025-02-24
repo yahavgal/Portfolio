@@ -25,7 +25,7 @@ const AppContainer = styled.div`
   - Ensures the content below the header fills the remaining space.
 */
 const PageWrapper = styled.div`
-  flex: 1; /* Ensures content fills remaining space */
+  flex: 1;
   display: flex;
   flex-direction: column;
 `;
