@@ -235,65 +235,6 @@ const projectData = [
       'https://www.canva.com/design/DAGYgmcPfAI/VcF52ta3kBPgxeWnYSBpkg/edit?utm_content=DAGYgmcPfAI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
     icon: <FaFigma />,
   },
-  {
-    name: 'Shrine',
-    image: 'project-preview.jpg',
-    background: '/shrine_background.jpg',
-    techStack: ['Figma', 'Photoshop', 'Balsamiq'],
-    shortDescription: 'A mindfulness app for daily growth.',
-    description:
-      'A holistic platform designed to help individuals organize and engage in mindfulness activities. The project aimed to provide users with tools for daily mindfulness exercises, guided meditations, and a way to track their personal growth over time.',
-    problem:
-      'Users often struggle to maintain consistent mindfulness practices due to the lack of structure and personal engagement in existing apps. They also find it difficult to balance mindfulness activities with their busy schedules.',
-    solution:
-      'Designed and prototyped an app that integrates daily mindfulness activities, personal habit tracking, and guided meditation sessions. The platform featured customized reminders and user journeys to help users stay committed to their mental well-being goals.',
-    keyFeatures: [
-      'Personalized Mindfulness Plans: Users could set their goals and receive tailored meditation and mindfulness routines.',
-      'Daily Reminders and Notifications: Customizable reminders to help users stick to their mindfulness practice, even on hectic days.',
-      'Progress Tracking: Detailed logs and visual tracking of users’ mindfulness habits and improvements over time.',
-      'Cross-platform: Planned development using React Native for both iOS and Android platforms.',
-    ],
-    screenshots: [
-      '/shrine_screenshot_1.png',
-      '/shrine_screenshot_2.png',
-      '/shrine_screenshot_3.png',
-      '/shrine_screenshot_4.png',
-      '/shrine_screenshot_5.png'
-    ],
-    challenges: [
-      {
-        type: 'challenge',
-        icon: <FaQuestionCircle />,
-        title: 'Designing the User Experience',
-        content:
-          'Faced challenges in creating an intuitive user journey that didn’t overwhelm new users while still providing depth for advanced users. Learned how to balance simplicity with functionality.',
-      },
-      {
-        type: 'learning',
-        icon: <FaLightbulb />,
-        title: 'Startup Partnership Issues',
-        content:
-          'The project faced difficulties due to lack of commitment from my partner, ultimately leading to a decision to part ways. However, the design phase provided invaluable insights into managing a startup environment and navigating early-stage development challenges.',
-      },
-    ],
-    results: [
-      {
-        icon: <FaFigma />,
-        title: 'Prototype Completion',
-        content: 'Delivered a fully functional Figma prototype with high-fidelity designs and user flows. The prototype showcased interactive elements, custom user journeys, and an integrated habit tracker.',
-      },
-      {
-        icon: <FaSlideshare />,
-        title: 'Key Takeaways',
-        content: 'Gained significant experience in product design, wireframing, and managing a startup project, even though it didn’t reach full development.',
-      },
-    ],
-    figmaLink: 'https://figma.com',
-    githubLink: null,
-    canvaLink:
-      'https://www.canva.com/design/DAGYgmcPfAI/VcF52ta3kBPgxeWnYSBpkg/edit?utm_content=DAGYgmcPfAI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
-    icon: <FaFigma />,
-  },
 ];
 
 /* Projects Component */
