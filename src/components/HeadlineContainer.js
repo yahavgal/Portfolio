@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+/* Styled Components */
 const HeadlineContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -10,8 +11,8 @@ const HeadlineContainer = styled.div`
   width: 100%;
   flex: 0 0 auto;
   max-height: 20vh;
-  margin-bottom: 15px; /* Increased slightly for better separation */
-  padding: 20px 10px; /* Ensures consistent spacing, especially on smaller screens */
+  margin-bottom: 15px;
+  padding: 20px 10px;
 
   @media (max-width: 768px) {
     padding: 18px 8px;
@@ -32,7 +33,7 @@ const HeadlineContainer = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: ${(props) => props.theme.textPrimary};
-    margin: 0 0 10px; /* Added margin-bottom for better spacing */
+    margin: 0 0 10px;
     line-height: 1.2;
 
     @media (max-width: 768px) {
@@ -48,7 +49,7 @@ const HeadlineContainer = styled.div`
     font-size: 1.25rem;
     color: ${(props) => props.theme.textSecondary};
     max-width: 700px;
-    padding: 0 10px; /* Keeps the text from touching screen edges */
+    padding: 0 10px;
     
     @media (max-width: 768px) {
       font-size: 1rem;
@@ -62,6 +63,7 @@ const HeadlineContainer = styled.div`
   }
 `;
 
+/* Headline Component */
 const Headline = ({ title, tagline }) => {
   return (
     <HeadlineContainer>

@@ -4,37 +4,62 @@ import {
   FaGithub,
   FaSlideshare,
   FaFigma,
-  FaExclamationTriangle, // Problem Icon
-  FaLightbulb,          // Solution Icon
-  FaTools,              // Challenges Icon
-  FaTrophy,             // Results Icon
-  FaCameraRetro,        // Screenshot Icon
-  FaCheckCircle,        // Key Features Icon
+  FaExclamationTriangle,
+  FaLightbulb,
+  FaTools,
+  FaTrophy,
+  FaCameraRetro,
 } from 'react-icons/fa';
-import { MdDescription, MdErrorOutline, MdBuild, MdEmojiEvents } from 'react-icons/md';
-
-// Icon for toggling the sidebar on mobile
+import { MdDescription, MdEmojiEvents } from 'react-icons/md';
 import { BsLayoutSidebarInset } from 'react-icons/bs';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-/* --------------------- STYLED COMPONENTS --------------------- */
+/* Styled Components */
+const expandIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+`;
+
+const collapseOut = keyframes`
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+`;
+
 const ExpandedProjectContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
+  position: fixed;
+  top: ${(props) => (props.cardPosition ? `${props.cardPosition.top}px` : "0")};
+  left: ${(props) => (props.cardPosition ? `${props.cardPosition.left}px` : "0")};
+  width: ${(props) => (props.cardPosition ? `${props.cardPosition.width}px` : "100vw")};
+  height: ${(props) => (props.cardPosition ? `${props.cardPosition.height}px` : "100vh")};
   background: ${(props) =>
     props.background ? `url(${props.background}) center/cover no-repeat` : props.theme.componentBackground};
   display: flex;
   flex-direction: column;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(${(props) => (props.isSidebarOpen ? "200px" : "0")});
+  animation: ${(props) => (props.isClosing ? collapseOut : expandIn)} 0.5s ease-out forwards;
+  transition: all 0.4s ease-in-out;
 `;
 
 const ExpandedContent = styled.div`
@@ -43,8 +68,10 @@ const ExpandedContent = styled.div`
   padding: 20px;
   width: 100%;
   background: rgba(${(props) => props.theme.componentBackgroundRGB}, 0.20);
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(${(props) => (props.isSidebarOpen ? "200px" : "0")});
+  transition: filter 0.3s ease-in-out;
+  
+  /* Blur effect when sidebar is open */
+  filter: ${(props) => (props.isSidebarOpen ? "blur(4px)" : "none")};
 `;
 
 const ExpandedHeader = styled.div`
@@ -72,64 +99,129 @@ const TabContainer = styled.div`
   left: 0;
   top: 0;
   height: 100%;
-  width: 200px;
-  background: rgba(${(props) => props.theme.backgroundRGB}, 0.85); /* Minor transparency for background */
-  backdrop-filter: blur(5px);
+  width: 240px; /* Slightly wider for comfort */
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.95);
+  backdrop-filter: blur(12px);
   transition: transform 0.3s ease-in-out;
   z-index: 1800;
-  transform: translateX(${(props) => (props.isSidebarOpen ? "0" : "-200px")});
+  transform: translateX(${(props) => (props.isSidebarOpen ? "0" : "-240px")});
+  padding-top: 20px;
 
   @media (max-width: 768px) {
-    width: 55%;
-    max-width: 250px;
+    width: 60%;
+    max-width: 280px;
     transform: translateX(${(props) => (props.isSidebarOpen ? "0" : "-100%")});
   }
 `;
 
+const TabButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 3.8rem; /* Slightly taller for breathing room */
+  border: none;
+  background: transparent;
+  color: ${(props) => (props.active ? props.theme.accent : props.theme.textPrimary)};
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease-in-out;
+  gap: 14px;
+
+  &:hover {
+    background: rgba(${(props) => props.theme.accentRGB}, 0.15);
+    color: ${(props) => props.theme.accent};
+    transform: scale(1.05);
+  }
+
+  svg {
+    font-size: 1.8rem; /* Slightly larger icons for visibility */
+    min-width: 30px;
+  }
+
+  span {
+    font-size: 1.1rem;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 768px) {
+    height: 3.5rem;
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 600px) {
+    height: 3.2rem;
+    font-size: 1rem;
+
+    span {
+      font-size: 0.9rem; /* Adjust text size for mobile */
+    }
+  }
+
+  @media (max-width: 400px) {
+    height: 3rem;
+
+    svg {
+      font-size: 1.4rem;
+    }
+
+    span {
+      font-size: 0.85rem;
+    }
+  }
+`;
+
 const SidebarToggleIcon = styled.button`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(${(props) => props.theme.backgroundRGB}, 0.9);
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.85);
   color: ${(props) => props.theme.textPrimary};
   border: none;
   border-radius: 50%;
-  padding: 10px;
+  padding: 12px;
   cursor: pointer;
-  z-index: 1100;
+  z-index: 1900;
   transition: all 0.3s ease-in-out;
   display: ${(props) => (props.isSidebarOpen ? "none" : "flex")};
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    background: ${(props) => props.theme.headerPrimary};
+    background: ${(props) => props.theme.accent};
     transform: scale(1.1);
+    box-shadow: 0px 0px 10px ${(props) => props.theme.accent};
   }
 
   svg {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 600px) {
+    padding: 10px;
+
+    svg {
+      font-size: 1.4rem;
+    }
   }
 `;
 
 const DarkOverlay = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 200px; /* Starts where the sidebar ends */
-  width: calc(100% - 200px); /* Covers only the content area */
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, ${(props) => (props.isSidebarOpen ? 0.4 : 0)});
+  background: rgba(0, 0, 0, ${(props) => (props.isSidebarOpen ? 0.5 : 0)});
   transition: background 0.3s ease-in-out;
-  z-index: ${(props) => (props.isSidebarOpen ? 1600 : -1)};
+  z-index: ${(props) => (props.isSidebarOpen ? 1700 : -1)};
   pointer-events: ${(props) => (props.isSidebarOpen ? "auto" : "none")};
-
-  @media (max-width: 768px) {
-    left: ${(props) => (props.isSidebarOpen ? "55%" : "0")};
-    width: ${(props) => (props.isSidebarOpen ? "45%" : "100%")};
-  }
 `;
 
-/* Centered Project Title */
 const ProjectTitle = styled.h2`
   font-size: 1.6rem;
   color: ${(props) => props.theme.accent};
@@ -148,7 +240,6 @@ const ProjectTitle = styled.h2`
   }
 `;
 
-/* Back Button */
 const BackButton = styled.button`
   background: linear-gradient(145deg, ${(props) => props.theme.accent} 20%, ${(props) => props.theme.accentDark} 80%);
   border: none;
@@ -186,7 +277,6 @@ const BackButton = styled.button`
   }
 `;
 
-/* Links Container */
 const ProjectLinks = styled.div`
   display: flex;
   gap: 12px;
@@ -200,7 +290,6 @@ const ProjectLinks = styled.div`
   }
 `;
 
-/* Circular Link Button */
 const CircleLinkButton = styled.a`
   display: flex;
   align-items: center;
@@ -236,82 +325,6 @@ const CircleLinkButton = styled.a`
   }
 `;
 
-const TabButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: ${(props) => (props.isSidebarOpen ? "flex-start" : "center")};
-  width: 100%;
-  height: 3.5rem;
-  border: none;
-  background: transparent;
-  color: ${(props) => (props.active ? props.theme.accent : props.theme.textPrimary)};
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: ${(props) => (props.isSidebarOpen ? "0 16px" : "0")};
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease-in-out;
-
-  &:hover {
-    background: rgba(${(props) => props.theme.accentRGB}, 0.15);
-    color: ${(props) => props.theme.accent};
-    transform: scale(1.1);
-  }
-
-  /* RESPONSIVE STYLING */
-  @media (max-width: 768px) {
-    height: 3rem;
-    font-size: 1.3rem;
-
-    svg {
-      font-size: 1.4rem;
-      min-width: 22px; /* Prevents icon from shrinking too much */
-      min-height: 22px;
-    }
-
-    span {
-      font-size: 0.95rem;
-    }
-  }
-
-  @media (max-width: 600px) {
-    height: 2.8rem;
-    font-size: 1.2rem;
-
-    svg {
-      font-size: 1.3rem;
-      min-width: 20px;
-      min-height: 20px;
-    }
-
-    span {
-      font-size: 0.85rem;
-    }
-  }
-
-  @media (max-width: 410px) {
-    height: 2.6rem;
-    font-size: 1.1rem;
-
-    svg {
-      font-size: 1.2rem;
-      min-width: 18px;
-      min-height: 18px; /* Ensures icons remain visible */
-    }
-
-    span {
-      font-size: 0.8rem;
-    }
-  }
-
-  /* Show text only when sidebar is open */
-  span {
-    display: ${(props) => (props.isSidebarOpen ? "inline" : "none")};
-    margin-left: 12px;
-    font-size: 1rem;
-    white-space: nowrap; /* Prevents text from wrapping */
-  }
-`;
-
-/* Reusable Sections + Headline */
 const Section = styled.div`
   background: rgba(${(props) => props.theme.backgroundRGB}, 0.8);
   backdrop-filter: blur(10px);
@@ -392,7 +405,6 @@ const SectionHeadline = styled.div`
     }
   }
 `;
-
 
 const SectionHeadlineSecondary = styled.div`
   display: flex;
@@ -546,6 +558,7 @@ const OverlayContainer = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
 `;
 
 const ExpandedImage = styled.img`
@@ -567,16 +580,14 @@ function SectionHeader({ icon, title }) {
   );
 }
 
-/* --------------------- MAIN COMPONENT --------------------- */
-const ExpandedProject = ({ project, onClose }) => {
-  const [activeTab, setActiveTab] = useState('description');
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  // For mobile sidebar
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+/* Expanded Project Component */
+const ExpandedProject = ({ project, onClose, isClosing }) => {
+  const [activeTab, setActiveTab] = useState('description'); // Default to description tab
+  const [selectedImage, setSelectedImage] = useState(null); // For fullscreen image overlay
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // For toggling sidebar
 
   return (
-    <ExpandedProjectContainer background={project.background}>
+    <ExpandedProjectContainer background={project.background} isClosing={isClosing}>
       <ExpandedHeader>
         <BackButton onClick={onClose}>
           <FaArrowLeft />
@@ -624,15 +635,15 @@ const ExpandedProject = ({ project, onClose }) => {
           </TabButton>
   
           <TabButton
-            active={activeTab === "problem"}
+            active={activeTab === "features"}
             onClick={() => {
-              setActiveTab("problem");
+              setActiveTab("features");
               setIsSidebarOpen(false);
             }}
             isSidebarOpen={isSidebarOpen}
           >
-            <MdErrorOutline size={24} />
-            <span>Problem & Solution</span>
+            <FaLightbulb size={24} />
+            <span>Features</span>
           </TabButton>
   
           <TabButton
@@ -643,7 +654,7 @@ const ExpandedProject = ({ project, onClose }) => {
             }}
             isSidebarOpen={isSidebarOpen}
           >
-            <MdBuild size={24} />
+            <FaTools size={24} />
             <span>Challenges</span>
           </TabButton>
   
@@ -659,8 +670,6 @@ const ExpandedProject = ({ project, onClose }) => {
             <span>Results</span>
           </TabButton>
         </TabContainer>
-  
-        {/* Dark Overlay on Content Only */}
         <DarkOverlay isSidebarOpen={isSidebarOpen} onClick={() => setIsSidebarOpen(false)} />
   
         {/* Main Content */}
@@ -676,7 +685,19 @@ const ExpandedProject = ({ project, onClose }) => {
                     <FaCameraRetro />
                     <span>Screenshots</span>
                   </SectionHeadlineSecondary>
-                  <Swiper modules={[Navigation]} spaceBetween={10} slidesPerView={2}>
+                  <Swiper
+                    modules={[Navigation]}
+                    spaceBetween={10}
+                    slidesPerView={2}
+                    breakpoints={{
+                      768: {
+                        slidesPerView: 2,
+                      },
+                      0: {
+                        slidesPerView: 1,
+                      }
+                    }}
+                  >
                     {project.screenshots.map((image, index) => (
                       <SwiperSlide key={index}>
                         <ScreenshotImage src={image} onClick={() => setSelectedImage(image)} />
@@ -688,7 +709,7 @@ const ExpandedProject = ({ project, onClose }) => {
             </Section>
           )}
   
-          {activeTab === "problem" && (
+          {activeTab === "features" && (
             <Section>
               <SectionHeader icon={<FaExclamationTriangle />} title="Problem" />
               <SectionContent>{project.problem}</SectionContent>

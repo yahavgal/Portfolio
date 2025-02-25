@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { FaEnvelope, FaUser, FaPaperPlane } from "react-icons/fa";
 
+/* Styled Components */
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -116,6 +117,7 @@ const SendButton = styled.button`
   }
 `;
 
+/* Main Component */
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -127,10 +129,28 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+    
+    try {
+      const response = await fetch("http://localhost:5000/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+  
+      const result = await response.json();
+      if (result.success) {
+        alert("Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        alert("Failed to send message.");
+      }
+    } catch (error) {
+      alert("Error sending message.");
+    }
   };
+  
 
   return (
     <ContactContainer>

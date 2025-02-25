@@ -7,35 +7,44 @@ import HeadlineContainer from '../components/HeadlineContainer';
 import PageLayout from '../components/PageLayout';
 import SkillCategories from '../components/SkillCategories';
 
-/* ------------------- STYLED COMPONENTS ------------------- */
-
 const ContentContainer = styled.div`
   flex: 1;
-  padding: 40px 20px 80px; 
+  padding: 40px 20px 120px;
   text-align: center;
 `;
 
-/* ----- FOOTER SECTION ----- */
 const Footer = styled.footer`
   width: 100%;
   background: rgba(${(props) => props.theme.backgroundRGB}, 0.8);
   border-top: 2px solid ${(props) => props.theme.textSecondary};
   padding: 20px;
   display: flex;
-  justify-content: space-between; /* 🔥 Spreads the items apart */
+  justify-content: space-between;
   align-items: center;
   position: fixed;
   bottom: 0;
   left: 0;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+  }
 `;
 
-/* 🔥 Social Links on the Left */
 const FooterLinksContainer = styled.div`
   display: flex;
   gap: 15px;
+
+  @media (max-width: 600px) {
+    justify-content: center;
+    width: 100%;
+  }
 `;
 
-/* 🔥 Footer Button (Icons) */
 const FooterButton = styled.a`
   display: flex;
   align-items: center;
@@ -60,20 +69,24 @@ const FooterButton = styled.a`
   }
 `;
 
-/* 🔥 CTA Button - Contact Me (Now on the Right) */
 const CTAButton = styled(FooterButton)`
   background: ${(props) => props.theme.accent};
   color: ${(props) => props.theme.componentBackground};
   font-weight: bold;
   padding: 12px 22px;
-  margin-left: auto; /* 🔥 Pushes it to the right */
+  margin-left: auto;
 
   &:hover {
     background: ${(props) => props.theme.accentDark};
   }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
 `;
 
-/* ------------------- MAIN COMPONENT ------------------- */
 const About = () => {
   return (
     <PageLayout>
@@ -82,14 +95,10 @@ const About = () => {
           title="Hi, I'm Yahav Gal."
           tagline="With a keen eye for design and a deep understanding of development, I craft seamless digital solutions that make an impact."
         />
-        
-        {/* SKILLS SECTION */}
         <SkillCategories />
       </ContentContainer>
 
-      {/* FOOTER */}
       <Footer>
-        {/* Social Links */}
         <FooterLinksContainer>
           <FooterButton href="https://github.com/yourgithub" target="_blank">
             <FaGithub />
@@ -101,8 +110,6 @@ const About = () => {
             <FaFileDownload />
           </FooterButton>
         </FooterLinksContainer>
-
-        {/* Contact Button (Right Side) */}
         <CTAButton href="/contact">
           <FaEnvelope /> Contact Me
         </CTAButton>

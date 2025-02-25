@@ -5,13 +5,14 @@ import {
   FaDatabase, FaGit
 } from 'react-icons/fa';
 
-/* ------ STYLED COMPONENTS ------ */
-
+/* Styled Components */
 const SkillsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 50px 0;
+  width: 100%;
+  padding-bottom: 100px; /* Prevents skills from getting hidden behind footer */
 `;
 
 const SkillsHeadline = styled.h2`
@@ -21,22 +22,32 @@ const SkillsHeadline = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 30px;
+
+  @media (max-width: 600px) {
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+  }
 `;
 
+
 const SkillsContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 120px)); /* Ensures proper alignment */
-  grid-auto-rows: auto; /* Prevents vertical overflow */
+  display: flex;
+  flex-wrap: wrap;
   gap: 18px;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  max-width: 600px;
   padding: 10px;
-  max-width: 100%; /* Ensures it doesn't exceed screen width */
 `;
 
 const SkillCard = styled.div`
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +55,6 @@ const SkillCard = styled.div`
   cursor: pointer;
   position: relative;
 
-  /* Icon */
   svg {
     font-size: 2rem;
     color: ${(props) => props.theme.accent};
@@ -56,11 +66,10 @@ const SkillCard = styled.div`
     filter: drop-shadow(0px 0px 10px rgba(${(props) => props.theme.accentRGB}, 0.6));
   }
 
-  /* Hidden Text (Now Closer to Icon) */
   span {
     position: absolute;
-    bottom: -12px; /* Moved it up a bit */
-    font-size: 0.85rem; /* Slightly bigger */
+    bottom: -12px;
+    font-size: 0.85rem;
     color: ${(props) => props.theme.accent};
     font-weight: bold;
     opacity: 0;
@@ -69,14 +78,12 @@ const SkillCard = styled.div`
 
   &:hover span {
     opacity: 1;
-    transform: translateY(3px); /* Less movement for a more natural glow */
+    transform: translateY(3px);
     filter: drop-shadow(0px 0px 8px rgba(${(props) => props.theme.accentRGB}, 0.5));
   }
 `;
 
-
-
-/* ------ MAIN COMPONENT ------ */
+/* Component */
 const SkillCategories = () => {
   return (
     <SkillsWrapper>

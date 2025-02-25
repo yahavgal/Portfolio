@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+/* Styled Components */
 const PageLayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,6 +12,7 @@ const PageLayoutContainer = styled.div`
   overflow: hidden;
 `;
 
+/* Layout Component */
 const PageLayout = ({ children }) => {
   return <PageLayoutContainer>{children}</PageLayoutContainer>;
 };

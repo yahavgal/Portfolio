@@ -5,34 +5,27 @@ import { useNavigate } from 'react-router-dom';
 import HeadlineContainer from '../components/HeadlineContainer';
 import PageLayout from '../components/PageLayout';
 
-/* 
-  CTAContainer:
-  - Container for Call-to-Action buttons.
-  - Stacks buttons under 440px width.
-*/
+/* Styled Components */
 const CTAContainer = styled.div`
   display: flex;
   gap: 15px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
 
-  @media (max-width: 440px) {
+  @media (max-width: 480px) {
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    gap: 10px; /* Reduce gap for stacked buttons */
+    gap: 12px;
   }
 `;
 
-/* 
-  CTAButton:
-  - Styled button with animations and responsiveness.
-  - Adjusts padding on mobile for better fit.
-*/
 const CTAButton = styled.button`
   background-color: ${(props) => props.theme.accent};
   color: ${(props) => props.theme.textPrimary};
-  border: 2px solid ${(props) => props.theme.textPrimary};
-  border-radius: 10px;
-  padding: 14px 28px;
+  border: none;
+  border-radius: 5px;
+  padding: 14px 24px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -40,54 +33,38 @@ const CTAButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: background 0.2s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  min-width: 160px; /* Prevents button from becoming too small */
-  
+  transition: all 0.3s ease-in-out;
+  min-width: 170px;
+  max-width: 220px;
+  width: 100%;
+
   &:hover {
+    transform: scale(1.05);
     background-color: ${(props) => props.theme.textPrimary};
     color: ${(props) => props.theme.componentBackground};
-    transform: scale(1.05);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   &:active {
-    background-color: ${(props) => props.theme.headerPrimary};
-    color: ${(props) => props.theme.textSecondary};
+    transform: scale(0.98);
   }
 
-  &:focus {
-    outline: 2px dashed ${(props) => props.theme.textPrimary};
-    outline-offset: 4px;
-  }
-
-  &:disabled {
-    background-color: ${(props) => props.theme.background};
-    color: ${(props) => props.theme.textSecondary};
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  @media (max-width: 440px) {
-    width: 100%;
-    padding: 12px 24px; /* Slightly smaller padding for mobile */
+  @media (max-width: 480px) {
+    min-width: 80%;
+    max-width: 280px;
+    padding: 12px 20px;
   }
 
   svg {
-    font-size: 1.2rem; /* Ensures icon visibility */
-    transition: transform 0.3s ease, color 0.3s ease;
-    pointer-events: none; /* Prevent hover issues on mobile */
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
   }
 
   &:hover svg {
-    transform: scale(1.15);
-    color: ${(props) => props.theme.componentBackground};
+    transform: scale(1.2);
   }
 `;
 
-/* 
-  OutlineButton:
-  - Secondary Call-to-Action button with border.
-*/
 const OutlineButton = styled(CTAButton)`
   background-color: transparent;
   border: 2px solid ${(props) => props.theme.textPrimary};
@@ -99,10 +76,7 @@ const OutlineButton = styled(CTAButton)`
   }
 `;
 
-/* 
-  Home Component:
-  - Displays a headline and Call-to-Action buttons.
-*/
+/* Main component */
 const Home = () => {
   const navigate = useNavigate();
 

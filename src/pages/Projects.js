@@ -7,11 +7,10 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css';
 import HeadlineContainer from '../components/HeadlineContainer';
-import ExpandedProject from '../components/ExpandedProject'; // Import custom components
+import ExpandedProject from '../components/ExpandedProject';
 import PageLayout from '../components/PageLayout';
 
-
-// Styled Components for Projects Section
+/* Styled Components */
 const SwiperContainer = styled.div`
   position: relative; /* ✅ Keeps absolute children (SwipeIndicator) within */
   display: flex;
@@ -38,12 +37,16 @@ const ProjectCard = styled.div`
   flex-direction: column;
   position: relative;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
   &:hover {
     border: 1px solid ${(props) => props.theme.accent};
     box-shadow: 0px 0px 25px rgba(${(props) => props.theme.accentRGB}, 0.3);
     transform: translateY(-3px);
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 
   @media (max-width: 730px) {
@@ -171,6 +174,7 @@ const SwipeIndicator = styled.div`
   }
 `;
 
+/* Project Data Object */
 const projectData = [
   {
     name: 'Shrine',
@@ -292,10 +296,35 @@ const projectData = [
   },
 ];
 
+/* Projects Component */
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [showSwipeIndicator, setShowSwipeIndicator] = useState(false);
+  const [showSwipeIndicator, setShowSwipeIndicator] = useState(false); // State to show/hide swipe indicator
+  const [isClosing, setIsClosing] = useState(false); // State to handle closing animation
+  const [cardPosition, setCardPosition] = useState(null); // State to store card position
 
+  /* Open and Close Project Functions */
+  const openProject = (project, event) => {
+  const rect = event.currentTarget.getBoundingClientRect(); // Get card position
+  setCardPosition({
+    top: rect.top,
+    left: rect.left,
+    width: rect.width,
+    height: rect.height
+  });
+  setSelectedProject(project);
+  setIsClosing(false);
+  };
+
+  const closeProject = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setSelectedProject(null);
+      setCardPosition(null);
+    }, 500);
+  };
+  
+  /* Swipe Indicator Timer */
   useEffect(() => {
     setShowSwipeIndicator(true);
     const fadeTimer = setTimeout(() => {
@@ -304,7 +333,6 @@ const Projects = () => {
 
     return () => clearTimeout(fadeTimer);
   }, []);
-
 
   return (
     <PageLayout>
@@ -319,7 +347,7 @@ const Projects = () => {
             <Swiper modules={[Pagination, Navigation]} spaceBetween={10} slidesPerView={1} style={{ width: "100%", overflow: "hidden" }}>
               {projectData.map((project) => (
                 <SwiperSlide key={project.name} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                  <ProjectCard onClick={() => setSelectedProject(project)}>
+                <ProjectCard onClick={(e) => openProject(project, e)}>
                     <ProjectHeader>
                       <ProjectTitle>{project.name}</ProjectTitle>
                     </ProjectHeader>
@@ -352,8 +380,6 @@ const Projects = () => {
               ))}
             </Swiper>
           </SwiperContainer>
-  
-          {/* ✅ Now the Swipe Indicator is part of the same branch */}
           {showSwipeIndicator && (
             <SwipeIndicator isVisible={showSwipeIndicator}>
               <span>Swipe</span>
@@ -362,9 +388,15 @@ const Projects = () => {
           )}
         </>
       ) : (
-        <ExpandedProject project={selectedProject} onClose={() => setSelectedProject(null)} />
+        <ExpandedProject 
+          project={selectedProject} 
+          onClose={closeProject} 
+          isClosing={isClosing} 
+          cardPosition={cardPosition}
+        />
       )}
     </PageLayout>
   );
-}  
+}
+
 export default Projects;
