@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   FaArrowLeft,
   FaGithub,
@@ -581,7 +581,11 @@ function SectionHeader({ icon, title }) {
 }
 
 /* Expanded Project Component */
-const ExpandedProject = ({ project, onClose, isClosing }) => {
+const ExpandedProject = ({ project, onClose, isClosing, setProjectExpanded }) => {
+  useEffect(() => {
+    setProjectExpanded(true); // ✅ Ensure Header is Hidden
+    return () => setProjectExpanded(false); // ✅ Show Header when component unmounts
+  }, []);
   const [activeTab, setActiveTab] = useState('description'); // Default to description tab
   const [selectedImage, setSelectedImage] = useState(null); // For fullscreen image overlay
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // For toggling sidebar

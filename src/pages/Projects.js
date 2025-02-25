@@ -297,23 +297,23 @@ const projectData = [
 ];
 
 /* Projects Component */
-const Projects = () => {
+const Projects = ({ setProjectExpanded }) => { // ✅ Accept prop to update layout
   const [selectedProject, setSelectedProject] = useState(null);
-  const [showSwipeIndicator, setShowSwipeIndicator] = useState(false); // State to show/hide swipe indicator
-  const [isClosing, setIsClosing] = useState(false); // State to handle closing animation
-  const [cardPosition, setCardPosition] = useState(null); // State to store card position
+  const [isClosing, setIsClosing] = useState(false);
+  const [cardPosition, setCardPosition] = useState(null);
 
   /* Open and Close Project Functions */
   const openProject = (project, event) => {
-  const rect = event.currentTarget.getBoundingClientRect(); // Get card position
-  setCardPosition({
-    top: rect.top,
-    left: rect.left,
-    width: rect.width,
-    height: rect.height
-  });
-  setSelectedProject(project);
-  setIsClosing(false);
+    const rect = event.currentTarget.getBoundingClientRect();
+    setCardPosition({
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height
+    });
+    setSelectedProject(project);
+    setProjectExpanded(true); // ✅ Notify Layout to hide header
+    setIsClosing(false);
   };
 
   const closeProject = () => {
@@ -321,18 +321,9 @@ const Projects = () => {
     setTimeout(() => {
       setSelectedProject(null);
       setCardPosition(null);
+      setProjectExpanded(false); // ✅ Notify Layout to show header again
     }, 500);
   };
-  
-  /* Swipe Indicator Timer */
-  useEffect(() => {
-    setShowSwipeIndicator(true);
-    const fadeTimer = setTimeout(() => {
-      setShowSwipeIndicator(false);
-    }, 3000);
-
-    return () => clearTimeout(fadeTimer);
-  }, []);
 
   return (
     <PageLayout>
@@ -347,7 +338,7 @@ const Projects = () => {
             <Swiper modules={[Pagination, Navigation]} spaceBetween={10} slidesPerView={1} style={{ width: "100%", overflow: "hidden" }}>
               {projectData.map((project) => (
                 <SwiperSlide key={project.name} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <ProjectCard onClick={(e) => openProject(project, e)}>
+                  <ProjectCard onClick={(e) => openProject(project, e)}>
                     <ProjectHeader>
                       <ProjectTitle>{project.name}</ProjectTitle>
                     </ProjectHeader>
@@ -380,12 +371,6 @@ const Projects = () => {
               ))}
             </Swiper>
           </SwiperContainer>
-          {showSwipeIndicator && (
-            <SwipeIndicator isVisible={showSwipeIndicator}>
-              <span>Swipe</span>
-              <FaArrowRight />
-            </SwipeIndicator>
-          )}
         </>
       ) : (
         <ExpandedProject 
@@ -393,10 +378,11 @@ const Projects = () => {
           onClose={closeProject} 
           isClosing={isClosing} 
           cardPosition={cardPosition}
+          setProjectExpanded={setProjectExpanded} // ✅ Pass it to ExpandedProject
         />
       )}
     </PageLayout>
   );
-}
+};
 
 export default Projects;

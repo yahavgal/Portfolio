@@ -1,50 +1,55 @@
-# Portfolio Website
+# 🎨 Portfolio Website  
 
-Welcome to my portfolio website, a dynamic platform showcasing my skills, projects, and design acumen. Built with attention to detail and user experience in mind, this website is a reflection of my capabilities in modern web development and design.
+Welcome to my **personal portfolio website**, a modern, interactive showcase of my skills, projects, and design expertise. This platform demonstrates my approach to **web development, UI/UX design**, and seamless **user interactions**.
 
-## 🔍 Features
-
-- **High-Fidelity Design**: Crafted using [Figma](https://www.figma.com/design/GnoCNojkfu6HB2cz9G7eVn/Portfolio?m=auto&t=VA2m99nBGCscb8Yd-1) for pixel-perfect prototyping and seamless UI/UX.
-- **Dynamic Content**: Includes paginated, interactive project cards with detailed views for each project.
-- **Responsive Design**: Optimized for all devices, ensuring an excellent user experience on desktops, tablets, and smartphones.
-- **Interactive UI**: Styled using `styled-components` to create a visually appealing and cohesive interface.
-- **Cross-Browser Compatibility**: Tested on major browsers for consistent performance.
-
-## 🛠️ Tech Stack
-
-- **Frontend**: React.js, styled-components
-- **Design**: Figma
-- **Version Control**: Git
-- **Hosting**: In the future!
-
-## 🚀 Key Highlights
-
-- **Interactive Project Cards**: Users can explore detailed views of each project with descriptions, problems solved, solutions implemented, and key features.
-- **Modern Aesthetic**: Combines minimalist design with a focus on functionality and user engagement.
-- **Performance Optimized**: Fast-loading pages with efficient rendering for smooth interactions.
-
-## 🌟 How It Was Made
-
-### Design Phase:
-- Used Figma to create high-fidelity designs and prototypes.
-- Prioritized usability, accessibility, and visual hierarchy.
-
-### Development Phase:
-- Built with React.js for modular, reusable components.
-- Styled using `styled-components` for flexibility and maintainability.
-- Implemented dynamic content.
-
-## 📄 Future Enhancements
-- **Backend Integration**: Implement a CMS for dynamic content updates.
-- **Animations**: Enhance UI with smooth transitions and animations.
-
-## 👨‍💻 Author
-
-Yahav Gal (https://www.linkedin.com/in/yahav-gal-727502203/)  
-Frontend Developer | UI/UX Designer  
-
-Feel free to explore the website and reach out for any inquiries or collaborations!
+📍 **Live Demo**: [View Portfolio on Vercel](https://portfolio-pf0ccyicq-yahavs-projects.vercel.app/projects)  
 
 ---
 
-*This portfolio website is a testament to my dedication to web development and design. Thank you for visiting!*
+## 🔥 Features  
+
+- ✅ **Deployed on Vercel** – Fast, scalable, and globally distributed.  
+- ✅ **Backend for Form Submission** – Built with **Node.js & Express.js** to handle contact form submissions.  
+- ✅ **High-Fidelity UI** – Designed in [Figma](https://www.figma.com/design/GnoCNojkfu6HB2cz9G7eVn/Portfolio?m=auto&t=VA2m99nBGCscb8Yd-1) for a pixel-perfect experience.  
+- ✅ **Dark Mode Support** – Toggle between light and dark themes for a personalized experience.  
+- ✅ **Animated Page Transitions** – Powered by `framer-motion` for smooth navigation.  
+- ✅ **Interactive Project Cards** – Expandable views with in-depth descriptions, features, and screenshots.  
+- ✅ **Responsive & Mobile-Friendly** – Optimized for all devices.  
+
+---
+
+## 🛠️ Tech Stack  
+
+### **Frontend:**  
+- **React.js** – Component-based, fast-rendering UI  
+- **Styled-Components** – Custom theming & styling  
+- **Framer Motion** – Smooth page transitions  
+- **Swiper.js** – Interactive project carousels  
+
+### **Backend:**  
+- **Node.js & Express.js** – Handles form submissions  
+- **Nodemailer** – Sends emails via the contact form  
+
+### **Hosting & Deployment:**  
+- **Frontend:** Deployed with **Vercel**  
+- **Backend:** Hosted on **Vercel Serverless Functions**  
+
+---
+
+## 📄 Future Enhancements  
+- **CMS Integration** – Manage portfolio content dynamically.  
+- **More Animations** – Smooth micro-interactions and hover effects.  
+- **Blog Section** – Share thoughts and experiences in web development.  
+
+---
+
+## 👨‍💻 Author  
+
+**Yahav Gal**  
+Frontend Developer | UI/UX Designer  
+
+🔗 **LinkedIn**: [linkedin.com/in/yahav-gal](https://www.linkedin.com/in/yahav-gal-727502203/)  
+
+---
+
+*This portfolio website is a testament to my dedication to web development and design. Thank you for visiting!* 🚀

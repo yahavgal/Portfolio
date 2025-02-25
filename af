@@ -1,0 +1,23 @@
+[33m38ed3c7[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Integrated framer-motion for smooth page transitions
+[33m06f3511[m Integrated backend for form submission
+[33m8057dfb[m Modified layout
+[33m2058ca0[m Modified pages
+[33m9da6682[m Optimized performance using reuseable layout component
+[33m466211d[m Optimized UX & responsiveness
+[33mdc8f8cf[m Encapsulated ExpandedProject to be a component
+[33m03b43d2[m Modified layout
+[33m1728e2c[m Optimized performance & responsiveness
+[33mc776890[m Optimized components reusability & responsiveness
+[33md2caf8a[m Modified styles
+[33m61d06e4[m Improved styling for accessiblity
+[33mfdeb4e1[m Added pagination using swiper
+[33m116eab5[m Modified theme style
+[33m0bae0cb[m Modified README.md file
+[33m06f3c4f[m git
+[33mc4ef084[m Added README.md file
+[33md4883cc[m Finished first expanded project card page
+[33m1079173[m Added Problem\Solution content to each project card
+[33m6755eaf[m Modified styles in the expanded project cards
+[33m4c908ee[m Added live links to each project if exists
+[33mfba2700[m Added projects & about pages
+[33m75c94eb[m first commit
