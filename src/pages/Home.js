@@ -4,6 +4,7 @@ import { FaPhone, FaSuitcase } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import HeadlineContainer from '../components/HeadlineContainer';
 import PageLayout from '../components/PageLayout';
+import PageTransition from "../components/PageTransition";
 
 /* Styled Components */
 const CTAContainer = styled.div`
@@ -81,20 +82,22 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <PageLayout>
-      <HeadlineContainer
-        title="Code Meets Intuition"
-        tagline="Full-Stack Developer & Product Designer"
-      />
-      <CTAContainer>
-        <CTAButton onClick={() => navigate('/contact')}>
-          <FaPhone /> Get in Touch
-        </CTAButton>
-        <OutlineButton onClick={() => navigate('/projects')}>
-          <FaSuitcase /> View my Work
-        </OutlineButton>
-      </CTAContainer>
-    </PageLayout>
+    <PageTransition>
+      <PageLayout>
+        <HeadlineContainer
+          title="Code Meets Intuition"
+          tagline="Full-Stack Developer & Product Designer"
+        />
+        <CTAContainer>
+          <CTAButton onClick={() => navigate('/contact')}>
+            <FaPhone /> Get in Touch
+          </CTAButton>
+          <OutlineButton onClick={() => navigate('/projects')}>
+            <FaSuitcase /> View my Work
+          </OutlineButton>
+        </CTAContainer>
+      </PageLayout>
+    </PageTransition>
   );
 };
 

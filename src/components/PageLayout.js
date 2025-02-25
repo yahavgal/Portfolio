@@ -7,9 +7,16 @@ const PageLayoutContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
-  min-height: calc(100vh - 60px); 
-  overflow: hidden;
+  min-height: 100vh;
+  padding-top: 80px;
+
+  @media (max-width: 768px) {
+    padding-top: 60px;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 50px;
+  }
 `;
 
 /* Layout Component */

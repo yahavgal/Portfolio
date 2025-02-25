@@ -11,6 +11,10 @@ const HeaderContainer = styled.header`
   height: 80px;
   padding: 20px;
   padding-bottom: 0;
+  position: fixed; /* ✅ Ensures it's always positioned properly */
+  width: 100%;
+  top: 0; /* ✅ Forces it to stay at the top without shifting */
+  z-index: 1100; /* ✅ Ensures it stays above everything */
 
   @media (max-width: 768px) {
     height: 60px;
@@ -23,23 +27,22 @@ const HeaderContainer = styled.header`
   }
 `;
 
+
 const ContentWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-`;
-
-const Spacer = styled.div`
-  flex: 1;
+  justify-content: center;
+  position: relative;
 `;
 
 const NavLinks = styled.nav`
   display: flex;
   gap: 20px;
+  align-items: center;
+  flex-grow: 1;
   justify-content: center;
-  flex: 2;
 
   @media (max-width: 768px) {
     display: none;
@@ -50,6 +53,8 @@ const MobileMenu = styled.div`
   display: none;
   font-size: 1.6rem;
   color: ${(props) => props.theme.textPrimary};
+  position: absolute; /* ✅ Keeps it in place without shifting other elements */
+  left: 0;
 
   @media (max-width: 768px) {
     display: block;
@@ -124,7 +129,6 @@ const Header = ({ toggleTheme, isDarkMode }) => {
           <MobileMenu onClick={toggleMenu}>
             {menuOpen ? <FaTimes /> : <FaBars />}
           </MobileMenu>
-          <Spacer />
           <NavLinks>
             <NavLink to="/" isActive={isActive("/")}>
               Home

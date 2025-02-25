@@ -10,6 +10,7 @@ import SkillCategories from '../components/SkillCategories';
 const ContentContainer = styled.div`
   flex: 1;
   padding: 40px 20px 120px;
+  padding-top: 0;
   text-align: center;
 `;
 
