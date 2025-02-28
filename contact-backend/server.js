@@ -16,11 +16,17 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post("/send", async (req, res) => {
+  console.log("Received form data:", req.body);
+
   const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, message: "Invalid request. Ensure all fields are filled." });
+  }
 
   const mailOptions = {
     from: email,
-    to: process.env.EMAIL, 
+    to: process.env.EMAIL,
     subject: `New Contact Form Submission from ${name}`,
     text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
   };
@@ -33,4 +39,5 @@ app.post("/send", async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log("🚀 Server running on port 5000"));
+const PORT = process.env.PORT || 5000; 
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

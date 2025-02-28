@@ -131,15 +131,23 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
+    const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  
     try {
-      const response = await fetch("http://localhost:5000/send", {
+      const response = await fetch(`${API_BASE_URL}/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+        }),
       });
   
       const result = await response.json();
+      console.log("Response from server:", result);
+  
       if (result.success) {
         alert("Message sent successfully!");
         setFormData({ name: "", email: "", message: "" });
@@ -147,11 +155,12 @@ const Contact = () => {
         alert("Failed to send message.");
       }
     } catch (error) {
+      console.error("Error sending message:", error);
       alert("Error sending message.");
     }
   };
   
-
+  
   return (
     <ContactContainer>
       <ContactForm onSubmit={handleSubmit}>
