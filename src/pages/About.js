@@ -1,120 +1,134 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { 
-  FaLinkedin, FaGithub, FaFileDownload, FaEnvelope 
+  FaLinkedin, FaGithub, FaFileDownload, FaEnvelope, FaPlus, FaTimes
 } from 'react-icons/fa';
 import HeadlineContainer from '../components/HeadlineContainer';
 import PageLayout from '../components/PageLayout';
 import SkillCategories from '../components/SkillCategories';
 
-const ContentContainer = styled.div`
-  flex: 1;
-  padding: 40px 20px 120px;
-  padding-top: 0;
-  text-align: center;
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  background: rgba(${(props) => props.theme.backgroundRGB}, 0.8);
-  border-top: 2px solid ${(props) => props.theme.textSecondary};
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Styled Components */
+const FloatingBubble = styled.div`
   position: fixed;
-  bottom: 0;
-  left: 0;
-  flex-wrap: wrap;
-  gap: 10px;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 15px;
-  }
-`;
-
-const FooterLinksContainer = styled.div`
+  bottom: 20px;
+  right: 20px;
   display: flex;
-  gap: 15px;
+  align-items: center;
+  gap: 10px;
+  background: rgba(${(props) => props.theme.backgroundRGB}, 0.3);
+  backdrop-filter: blur(10px);
+  padding: ${(props) => (props.expanded ? "12px 18px" : "12px")};
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  z-index: 1000;
 
-  @media (max-width: 600px) {
-    justify-content: center;
-    width: 100%;
+  @media (max-width: 768px) {
+    bottom: 15px;
+    right: 15px;
+    padding: ${(props) => (props.expanded ? "10px 14px" : "10px")};
   }
 `;
 
-const FooterButton = styled.a`
+const BubbleButton = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: rgba(${(props) => props.theme.textPrimaryRGB}, 0.15);
+  width: 42px;
+  height: 42px;
+  background: rgba(${(props) => props.theme.textPrimaryRGB}, 0.2);
   color: ${(props) => props.theme.textPrimary};
-  padding: 10px 18px;
-  font-size: 1rem;
-  border-radius: 8px;
+  border-radius: 50%;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    transform: scale(1.1);
-    background: rgba(${(props) => props.theme.textPrimaryRGB}, 0.25);
+    transform: scale(1.15);
+    background: ${(props) => props.theme.accent};
+    color: ${(props) => props.theme.background};
   }
 
   svg {
     font-size: 1.3rem;
   }
+
+  @media (max-width: 768px) {
+    width: 38px;
+    height: 38px;
+    svg {
+      font-size: 1.1rem;
+    }
+  }
 `;
 
-const CTAButton = styled(FooterButton)`
+const ExpandButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
   background: ${(props) => props.theme.accent};
   color: ${(props) => props.theme.componentBackground};
-  font-weight: bold;
-  padding: 12px 22px;
-  margin-left: auto;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
+    transform: scale(1.15);
     background: ${(props) => props.theme.accentDark};
   }
 
-  @media (max-width: 600px) {
-    width: 100%;
-    justify-content: center;
-    margin-left: 0;
+  svg {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 38px;
+    height: 38px;
+    svg {
+      font-size: 1.1rem;
+    }
   }
 `;
 
+/* About Page */
 const About = () => {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <PageLayout>
-      <ContentContainer>
-        <HeadlineContainer
-          title="Hi, I'm Yahav Gal."
-          tagline="With a keen eye for design and a deep understanding of development, I craft seamless digital solutions that make an impact."
-        />
-        <SkillCategories />
-      </ContentContainer>
+      <HeadlineContainer
+        title="Hi, I'm Yahav Gal."
+        tagline="With a keen eye for design and a deep understanding of development, I craft seamless digital solutions that make an impact."
+      />
+      <SkillCategories />
 
-      <Footer>
-        <FooterLinksContainer>
-          <FooterButton href="https://github.com/yourgithub" target="_blank">
-            <FaGithub />
-          </FooterButton>
-          <FooterButton href="https://linkedin.com/in/yourlinkedin" target="_blank">
-            <FaLinkedin />
-          </FooterButton>
-          <FooterButton href="/resume.pdf" download>
-            <FaFileDownload />
-          </FooterButton>
-        </FooterLinksContainer>
-        <CTAButton href="/contact">
-          <FaEnvelope /> Contact Me
-        </CTAButton>
-      </Footer>
+      {/* Floating Expandable Bubble */}
+      <FloatingBubble expanded={expanded} onClick={() => setExpanded(!expanded)}>
+        {expanded && (
+          <>
+            <BubbleButton href="https://github.com/yahavgal" target="_blank">
+              <FaGithub />
+            </BubbleButton>
+            <BubbleButton href="https://www.linkedin.com/in/yahav-gal-727502203/" target="_blank">
+              <FaLinkedin />
+            </BubbleButton>
+            <BubbleButton href="/resume.pdf" download>
+              <FaFileDownload />
+            </BubbleButton>
+            <BubbleButton href="/contact">
+              <FaEnvelope />
+            </BubbleButton>
+          </>
+        )}
+        <ExpandButton>
+          {expanded ? <FaTimes /> : <FaPlus />}
+        </ExpandButton>
+      </FloatingBubble>
     </PageLayout>
   );
 };

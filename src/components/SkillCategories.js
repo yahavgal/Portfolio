@@ -33,7 +33,6 @@ const SkillsHeadline = styled.h2`
   }
 `;
 
-
 const SkillsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

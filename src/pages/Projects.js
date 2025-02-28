@@ -238,10 +238,19 @@ const projectData = [
 ];
 
 /* Projects Component */
-const Projects = ({ setProjectExpanded }) => { // ✅ Accept prop to update layout
+const Projects = ({ setProjectExpanded }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
   const [cardPosition, setCardPosition] = useState(null);
+  const [showSwipeIndicator, setShowSwipeIndicator] = useState(true);
+
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => {
+      setShowSwipeIndicator(false); 
+    }, 4000);
+
+    return () => clearTimeout(fadeTimer);
+  }, []);
 
   /* Open and Close Project Functions */
   const openProject = (project, event) => {
@@ -253,7 +262,7 @@ const Projects = ({ setProjectExpanded }) => { // ✅ Accept prop to update layo
       height: rect.height
     });
     setSelectedProject(project);
-    setProjectExpanded(true); // ✅ Notify Layout to hide header
+    setProjectExpanded(true); 
     setIsClosing(false);
   };
 
@@ -262,7 +271,7 @@ const Projects = ({ setProjectExpanded }) => { // ✅ Accept prop to update layo
     setTimeout(() => {
       setSelectedProject(null);
       setCardPosition(null);
-      setProjectExpanded(false); // ✅ Notify Layout to show header again
+      setProjectExpanded(false);
     }, 500);
   };
 
@@ -312,6 +321,12 @@ const Projects = ({ setProjectExpanded }) => { // ✅ Accept prop to update layo
               ))}
             </Swiper>
           </SwiperContainer>
+          {showSwipeIndicator && (
+            <SwipeIndicator isVisible={showSwipeIndicator}>
+              Swipe to Explore
+              <FaArrowRight />
+            </SwipeIndicator>
+          )}
         </>
       ) : (
         <ExpandedProject 
@@ -319,7 +334,7 @@ const Projects = ({ setProjectExpanded }) => { // ✅ Accept prop to update layo
           onClose={closeProject} 
           isClosing={isClosing} 
           cardPosition={cardPosition}
-          setProjectExpanded={setProjectExpanded} // ✅ Pass it to ExpandedProject
+          setProjectExpanded={setProjectExpanded}
         />
       )}
     </PageLayout>

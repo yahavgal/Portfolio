@@ -11,7 +11,6 @@ Welcome to my **personal portfolio website**, a modern, interactive showcase of 
 - ✅ **Deployed on Vercel** – Fast, scalable, and globally distributed.  
 - ✅ **Backend for Form Submission** – Built with **Node.js & Express.js** to handle contact form submissions.  
 - ✅ **High-Fidelity UI** – Designed in [Figma](https://www.figma.com/design/GnoCNojkfu6HB2cz9G7eVn/Portfolio?m=auto&t=VA2m99nBGCscb8Yd-1) for a pixel-perfect experience.  
-- ✅ **Dark Mode Support** – Toggle between light and dark themes for a personalized experience.  
 - ✅ **Animated Page Transitions** – Powered by `framer-motion` for smooth navigation.  
 - ✅ **Interactive Project Cards** – Expandable views with in-depth descriptions, features, and screenshots.  
 - ✅ **Responsive & Mobile-Friendly** – Optimized for all devices.  
@@ -46,7 +45,7 @@ Welcome to my **personal portfolio website**, a modern, interactive showcase of 
 ## 👨‍💻 Author  
 
 **Yahav Gal**  
-Frontend Developer | UI/UX Designer  
+Full-Stack Developer | Product Designer  
 
 🔗 **LinkedIn**: [linkedin.com/in/yahav-gal](https://www.linkedin.com/in/yahav-gal-727502203/)  
 

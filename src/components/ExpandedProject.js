@@ -517,37 +517,6 @@ const FeaturesSection = styled.div`
   }
 `;
 
-const FeatureItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 20px 24px;
-  border-radius: 12px;
-  background: linear-gradient(
-    to right,
-    rgba(${(props) => props.theme.componentBackgroundRGB}, 0.7),
-    rgba(${(props) => props.theme.componentBackgroundRGB}, 0.4)
-  );
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease-in-out;
-  margin-bottom: 14px;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.08);
-  }
-
-  span {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: ${(props) => props.theme.textPrimary};
-  }
-
-  @media (max-width: 600px) {
-    padding: 18px 20px;
-  }
-`;
-
 const OverlayContainer = styled.div`
   position: fixed;
   top: 0;
@@ -568,6 +537,58 @@ const ExpandedImage = styled.img`
   border-radius: 10px;
 `;
 
+const FeatureItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: linear-gradient(
+    to right,
+    rgba(${(props) => props.theme.componentBackgroundRGB}, 0.7),
+    rgba(${(props) => props.theme.componentBackgroundRGB}, 0.4)
+  );
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 12px;
+  text-align: left;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: ${(props) => props.theme.textPrimary};
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    padding: 14px 18px;
+
+    span {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 12px 16px;
+    
+    span {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    padding: 10px 14px;
+    
+    span {
+      font-size: 0.85rem;
+    }
+  }
+`;
 
 
 /* Helper Component for Title + Icon */
