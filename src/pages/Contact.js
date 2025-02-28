@@ -1,13 +1,28 @@
 import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
-import { FaEnvelope, FaUser, FaPaperPlane } from "react-icons/fa";
+import styled, { keyframes, css } from "styled-components";
+import Confetti from "react-confetti";
+import { FaEnvelope, FaUser, FaPaperPlane, FaCheckCircle, FaTrophy, FaFire } from "react-icons/fa";
+import HeadlineContainer from "../components/HeadlineContainer";
 
-/* Styled Components */
+/* 🔥 Keyframe Animations */
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
+const explode = keyframes`
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(3); opacity: 0; }
+`;
+
+const popUp = keyframes`
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+`;
+
+/* 🔥 Styled Components */
 const ContactContainer = styled.div`
   display: flex;
   align-items: center;
@@ -15,6 +30,8 @@ const ContactContainer = styled.div`
   height: 100vh;
   backdrop-filter: blur(12px);
   animation: ${fadeIn} 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
 `;
 
 const ContactForm = styled.form`
@@ -27,6 +44,13 @@ const ContactForm = styled.form`
   width: 400px;
   max-width: 90%;
   backdrop-filter: blur(8px);
+  transition: all 0.3s ease-in-out;
+
+  ${({ isExploding }) =>
+    isExploding &&
+    css`
+      animation: ${explode} 0.8s ease-in-out forwards;
+    `}
 
   @media (max-width: 500px) {
     padding: 30px;
@@ -117,23 +141,56 @@ const SendButton = styled.button`
   }
 `;
 
-/* Main Component */
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+const SuccessMessage = styled.div`
+  font-size: 2rem;
+  text-align: center;
+  color: ${(props) => props.theme.accent};
+  font-weight: bold;
+  animation: ${popUp} 0.8s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background: rgba(${(props) => props.theme.componentBackgroundRGB}, 0.8);
+  padding: 40px 50px;
+  border-radius: 15px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: 450px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+    padding: 30px;
+    width: 90%;
+  }
+`;
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+const TrophyIcon = styled(FaTrophy)`
+  font-size: 70px;
+  background: linear-gradient(
+    90deg,
+    ${(props) => props.theme.accent} 0%,
+    ${(props) => props.theme.accentLight || '#6D5BF5'} 50%,
+    #4F46E5 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0px 5px 12px rgba(0, 0, 0, 0.4);
+`;
+
+const Contact = () => {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isExploding, setIsExploding] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
-  
+
     try {
       const response = await fetch(`${API_BASE_URL}/send`, {
         method: "POST",
@@ -144,13 +201,15 @@ const Contact = () => {
           message: formData.message.trim(),
         }),
       });
-  
+
       const result = await response.json();
       console.log("Response from server:", result);
-  
+
       if (result.success) {
-        alert("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" });
+        setIsExploding(true);
+        setTimeout(() => {
+          setSubmitted(true);
+        }, 800); // Matches explosion animation
       } else {
         alert("Failed to send message.");
       }
@@ -159,31 +218,34 @@ const Contact = () => {
       alert("Error sending message.");
     }
   };
-  
-  
+
   return (
     <ContactContainer>
-      <ContactForm onSubmit={handleSubmit}>
-        <FormTitle>Let's Connect</FormTitle>
-
-        <InputGroup>
-          <FaUser />
-          <InputField type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
-        </InputGroup>
-
-        <InputGroup>
-          <FaEnvelope />
-          <InputField type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
-        </InputGroup>
-
-        <InputGroup>
-          <Textarea name="message" placeholder="Your Message" value={formData.message} onChange={handleChange} required />
-        </InputGroup>
-
-        <SendButton type="submit">
-          Send Message <FaPaperPlane />
-        </SendButton>
-      </ContactForm>
+      {submitted && <Confetti numberOfPieces={200} />}
+      {submitted ? (
+        <SuccessMessage>
+          <TrophyIcon />
+          <HeadlineContainer title="Success!" tagline="Your message has been sent successfully." />
+        </SuccessMessage>
+      ) : (
+        <ContactForm onSubmit={handleSubmit} isExploding={isExploding}>
+          <FormTitle>Let's Connect</FormTitle>
+          <InputGroup>
+            <FaUser />
+            <InputField type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
+          </InputGroup>
+          <InputGroup>
+            <FaEnvelope />
+            <InputField type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
+          </InputGroup>
+          <InputGroup>
+            <Textarea name="message" placeholder="Your Message" value={formData.message} onChange={handleChange} required />
+          </InputGroup>
+          <SendButton type="submit">
+            Send Message <FaPaperPlane />
+          </SendButton>
+        </ContactForm>
+      )}
     </ContactContainer>
   );
 };
