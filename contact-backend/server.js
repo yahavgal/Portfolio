@@ -5,7 +5,13 @@ const nodemailer = require("nodemailer");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "https://portfolio-neon-omega-57.vercel.app",
+    methods: "GET,POST,OPTIONS",
+    allowedHeaders: "Content-Type",
+  })
+);
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
