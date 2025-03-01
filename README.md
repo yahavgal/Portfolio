@@ -2,7 +2,7 @@
 
 Welcome to my **personal portfolio website**, a modern, interactive showcase of my skills, projects, and design expertise. This platform demonstrates my approach to **web development, UI/UX design**, and seamless **user interactions**.
 
-📍 **Live Demo**: [View Portfolio on Vercel](https://portfolio-pf0ccyicq-yahavs-projects.vercel.app/projects)  
+📍 **Live Demo**: [View Portfolio on Vercel](https://portfolio-neon-omega-57.vercel.app/)  
 
 ---
 
